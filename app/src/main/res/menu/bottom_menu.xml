@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/navigation_menu1"
+        app:showAsAction="always"
+        android:textColor="@android:color/white"
+        android:icon="@drawable/baseline_call_24"
+        android:title="CALLS" />
+
+    <item
+        android:id="@+id/navigation_menu2"
+        app:showAsAction="always"
+        android:textColor="@android:color/white"
+        android:icon="@drawable/baseline_chat_24"
+        android:title="CHATS" />
+
+    <item
+        android:id="@+id/navigation_menu3"
+        app:showAsAction="always"
+        android:textColor="@android:color/white"
+        android:icon="@drawable/baseline_perm_contact_calendar_24"
+        android:title="CONTACTS" />
+
+</menu>
