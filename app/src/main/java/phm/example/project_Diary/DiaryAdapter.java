@@ -56,7 +56,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
     @NonNull
     @Override
     public DiaryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.msg_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.diary_item, parent, false);
 
         return new DiaryAdapter.ViewHolder(view);
     }
