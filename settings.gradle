@@ -1,2 +1,2 @@
-rootProject.name='project_chat'
+rootProject.name='project_diary'
 include ':app'

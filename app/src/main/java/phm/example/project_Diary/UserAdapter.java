@@ -1,4 +1,4 @@
-package phm.example.project_chat;
+package phm.example.project_Diary;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -18,15 +17,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
@@ -45,8 +38,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         public RelativeLayout userbt;
         public TextView username;
         public ImageView profile;
-        //private ImageView status_on;
-        //private ImageView status_off;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,7 +68,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
        {//TODO if문으로 이미 만들어져있을 경우 팝업 안띄우게--하려면 데이터베이스 구조를 바꿔야함(아니면 너무 번거롭고 길어짐)
-                    Intent intent=new Intent(view.getContext(),ChatStart.class);
+                    Intent intent=new Intent(view.getContext(), DiarysStart.class);
                     intent.putExtra("user", user.getId());
                     intent.putExtra("username", user.getDisplayname());
                     view.getContext().startActivity(intent);}
@@ -101,22 +92,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                 }
             });
         }
-
-/*
-        // 활동 상태
-        if(status){
-            if(user.getStatus().equals("online")){
-                holder.status_on.setVisibility(View.VISIBLE);
-                holder.status_off.setVisibility(View.GONE);
-            }
-            else{
-                holder.status_on.setVisibility(View.GONE);
-                holder.status_off.setVisibility(View.VISIBLE);
-            }
-        }else{
-            holder.status_on.setVisibility(View.GONE);
-            holder.status_off.setVisibility(View.GONE);
-        }*/
 
     }
 

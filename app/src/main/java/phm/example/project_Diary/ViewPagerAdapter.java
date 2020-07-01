@@ -1,4 +1,4 @@
-package phm.example.project_chat;
+package phm.example.project_Diary;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;

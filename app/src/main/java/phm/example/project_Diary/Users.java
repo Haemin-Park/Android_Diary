@@ -1,4 +1,4 @@
-package phm.example.project_chat;
+package phm.example.project_Diary;
 
 public class Users {
     private String id;

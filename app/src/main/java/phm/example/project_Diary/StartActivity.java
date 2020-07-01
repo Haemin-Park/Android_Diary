@@ -1,4 +1,4 @@
-package phm.example.project_chat;
+package phm.example.project_Diary;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -15,8 +15,8 @@ public class StartActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
 
-    ChatsFragment chatFragment;
-    CallsFragment callsFragment;
+    DiarysFragment chatFragment;
+    FriendFragment friendFragment;
     SettingFragment contactsFragment;
     MenuItem prevMenuItem;
 
@@ -78,10 +78,10 @@ public class StartActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        callsFragment=new CallsFragment();
-        chatFragment=new ChatsFragment();
+        friendFragment =new FriendFragment();
+        chatFragment=new DiarysFragment();
         contactsFragment=new SettingFragment();
-        adapter.addFragment(callsFragment);
+        adapter.addFragment(friendFragment);
         adapter.addFragment(chatFragment);
         adapter.addFragment(contactsFragment);
         viewPager.setAdapter(adapter);

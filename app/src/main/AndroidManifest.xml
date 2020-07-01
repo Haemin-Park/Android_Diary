@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="phm.example.project_chat">
+    package="phm.example.project_Diary">
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity"/>
-        <activity android:name=".SignupActivity"/>
-        <activity android:name=".MainActivity">
+        <activity android:name="phm.example.project_Diary.LoginActivity"/>
+        <activity android:name="phm.example.project_Diary.SignupActivity"/>
+        <activity android:name="phm.example.project_Diary.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,11 +21,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ChatStart"
+            android:name="phm.example.project_Diary.DiarysStart"
             android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".StartActivity" />
-        <activity android:name=".WriteActivity" />
-        <activity android:name=".ChatActivity" />
+        <activity android:name="phm.example.project_Diary.StartActivity" />
+        <activity android:name="phm.example.project_Diary.WriteActivity" />
+        <activity android:name="phm.example.project_Diary.DiarysActivity" />
     </application>
 
 </manifest>

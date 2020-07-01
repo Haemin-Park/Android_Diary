@@ -1,4 +1,4 @@
-package phm.example.project_chat;
+package phm.example.project_Diary;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

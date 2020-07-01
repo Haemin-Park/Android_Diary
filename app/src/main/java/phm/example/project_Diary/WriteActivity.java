@@ -1,4 +1,4 @@
-package phm.example.project_chat;
+package phm.example.project_Diary;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,7 +11,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -37,8 +36,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.w3c.dom.Text;
-
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,12 +44,11 @@ import java.util.HashMap;
 public class WriteActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
-    DatabaseReference Dreference,RDreference;
+    DatabaseReference Dreference;
     DatabaseReference reference;
     FirebaseUser Fuser;
     String w_title="";
     String w_mainText="";
-    String roomID;
     String formatDate;
     Boolean photo;
 
@@ -81,23 +77,22 @@ public class WriteActivity extends AppCompatActivity {
         Fuser = FirebaseAuth.getInstance().getCurrentUser();
 
         Dreference = FirebaseDatabase.getInstance().getReference("Msg").child(Fuser.getUid());
-        //RDreference = FirebaseDatabase.getInstance().getReference("Rooms").child(Fuser.getUid());
         Dreference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(final DataSnapshot dataSnapshot) {
 
                     if(dataSnapshot.exists()){
-                        Msg msg = dataSnapshot.getValue(Msg.class);
+                        Diary diary = dataSnapshot.getValue(Diary.class);
 
-                        title.setText(msg.getTitle());
-                        mainText.setText(msg.getMainText());
-                        time.setText(msg.getTimestamp());
-                        if (msg.getImageURL().equals("default")) {
+                        title.setText(diary.getTitle());
+                        mainText.setText(diary.getMainText());
+                        time.setText(diary.getTimestamp());
+                        if (diary.getImageURL().equals("default")) {
                             gallery.setImageResource(R.drawable.ic_launcher_foreground);
                             photo=false;
                         } else {
                             FirebaseStorage storage = FirebaseStorage.getInstance();
-                            StorageReference storageReference = storage.getReference("Msg/"+msg.getImageURL());//채팅방 아이디도 추가해서 경로 지정해야함!
+                            StorageReference storageReference = storage.getReference("Msg/"+ diary.getImageURL());//채팅방 아이디도 추가해서 경로 지정해야함!
                             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
@@ -121,22 +116,6 @@ public class WriteActivity extends AppCompatActivity {
                 public void onCancelled(DatabaseError databaseError) {
                 }
         });
-/*
-        RDreference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-
-                if(dataSnapshot.exists()){
-                    Rooms rooms = dataSnapshot.getValue(Rooms.class);
-                    roomID="@make@"+rooms.getRoomUserList();
-                }
-            }
-
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });*/
 
         if(Build.VERSION.SDK_INT >= 21) {
             gallery.setClipToOutline(true);

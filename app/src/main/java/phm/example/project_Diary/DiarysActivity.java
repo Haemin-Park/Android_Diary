@@ -1,8 +1,7 @@
-package phm.example.project_chat;
+package phm.example.project_Diary;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -22,14 +21,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.security.AccessController.getContext;
-
-public class ChatActivity extends AppCompatActivity {
+public class DiarysActivity extends AppCompatActivity {
 
     Button writeBtn;
     private RecyclerView recyclerv;
-    private MsgAdapter msgAdapter;
-    private List<Msg> allMsg;
+    private DiaryAdapter diaryAdapter;
+    private List<Diary> allDiary;
 
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
@@ -38,13 +35,13 @@ public class ChatActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_diarys);
 
         recyclerv = (RecyclerView)findViewById(R.id.recycler);
         recyclerv.setHasFixedSize(true);
-        recyclerv.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+        recyclerv.setLayoutManager(new LinearLayoutManager(DiarysActivity.this));
 
-        allMsg = new ArrayList<>();
+        allDiary = new ArrayList<>();
         readUsers();
 
         writeBtn=(Button)findViewById(R.id.write);
@@ -52,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
         writeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(ChatActivity.this, WriteActivity.class); // 이동하려는 액티비티
+                Intent intent = new Intent(DiarysActivity.this, WriteActivity.class); // 이동하려는 액티비티
                 startActivity(intent);
             }
         });
@@ -66,17 +63,17 @@ public class ChatActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                allMsg.clear();
+                allDiary.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Msg msg = snapshot.getValue(Msg.class);
+                    Diary diary = snapshot.getValue(Diary.class);
 
                 {
-                        allMsg.add(msg);
+                        allDiary.add(diary);
                     }
                 }
 
-                msgAdapter = new MsgAdapter(ChatActivity.this, allMsg);
-                recyclerv.setAdapter(msgAdapter);
+                diaryAdapter = new DiaryAdapter(DiarysActivity.this, allDiary);
+                recyclerv.setAdapter(diaryAdapter);
             }
 
             @Override

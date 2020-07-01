@@ -1,8 +1,7 @@
-package phm.example.project_chat;
+package phm.example.project_Diary;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,14 +25,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ChatsFragment extends Fragment {
+public class DiarysFragment extends Fragment {
 
     Button writeBtn;
 /*
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.chats_fragment, container, false);
+        View view = inflater.inflate(R.layout.diarys_fragment, container, false);
 
         writeBtn=view.findViewById(R.id.write);
         writeBtn.setOnClickListener(btnClick);
@@ -50,13 +48,13 @@ public class ChatsFragment extends Fragment {
         }
     };*/
     private RecyclerView recyclerView;
-    private ChatAdapter chatAdapter;
+    private DiarysAdapter diarysAdapter;
     private List<Rooms> allRooms;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.chats_fragment, container, false);
+        View view = inflater.inflate(R.layout.diarys_fragment, container, false);
 
         writeBtn=view.findViewById(R.id.write);
         writeBtn.setOnClickListener(btnClick);
@@ -97,8 +95,8 @@ public class ChatsFragment extends Fragment {
 
                 }
 
-                chatAdapter = new ChatAdapter(getContext(), allRooms);
-                recyclerView.setAdapter(chatAdapter);
+                diarysAdapter = new DiarysAdapter(getContext(), allRooms);
+                recyclerView.setAdapter(diarysAdapter);
             }
 
             @Override

@@ -1,6 +1,6 @@
-package phm.example.project_chat;
+package phm.example.project_Diary;
 
-public class Msg {
+public class Diary {
     private String id;
     private String displayname;
     private String imageURL;
@@ -8,7 +8,7 @@ public class Msg {
     private String timestamp;
     private String mainText;
 
-    public Msg(String id,String timestamp, String displayname, String imageURL) {
+    public Diary(String id, String timestamp, String displayname, String imageURL) {
         this.id = id;
         this.displayname = displayname;
         this.imageURL = imageURL;
@@ -16,7 +16,7 @@ public class Msg {
         this.title = title;
         this.mainText = mainText;
     }
-    public Msg(){
+    public Diary(){
 
     }
 

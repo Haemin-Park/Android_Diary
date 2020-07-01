@@ -1,26 +1,18 @@
-package phm.example.project_chat;
+package phm.example.project_Diary;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.Objects;
-
-public class ChatStart extends Activity {
+public class DiarysStart extends Activity {
     String userID="";
     String Roomname="";
     String Roomnamechk="";
@@ -40,7 +32,7 @@ public class ChatStart extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.chat_start);
+        setContentView(R.layout.diarys_start);
         name=(TextView)findViewById(R.id.name);
 
         startbtn = (Button) findViewById(R.id.startbtn);
@@ -65,7 +57,7 @@ public class ChatStart extends Activity {
 
                     RoomUsers(userID,Fuser.getUid());
             }
-                Intent intent=new Intent(ChatStart.this,ChatActivity.class);
+                Intent intent=new Intent(DiarysStart.this, DiarysActivity.class);
                 intent.putExtra("roomname", Roomname);
                 startActivity(intent);
             }
@@ -81,7 +73,7 @@ public class ChatStart extends Activity {
         if(id==Fuser.getUid()){
         databaseReference.child("Rooms").child(id).child(Roomname).child("myusernm").setValue(username2);
         databaseReference.child("Rooms").child(id).child(Roomname).child("yourusernm").setValue(username1);
-        //username이 굳이 필요한가..?*/
+
        }else{
             databaseReference.child("Rooms").child(id).child(Roomname).child("myusernm").setValue(username1);
             databaseReference.child("Rooms").child(id).child(Roomname).child("yourusernm").setValue(username2);}
