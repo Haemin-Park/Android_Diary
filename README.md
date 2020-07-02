@@ -1,7 +1,8 @@
 # Android We:Diary
 :warning: 진행중 :warning:
 
-수정필요: 
+
+:exclamation: 수정 :exclamation:
 
 이미지 저장 경로 변경(현재 덮어쓰기 오류,,,)
 
