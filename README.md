@@ -2,7 +2,8 @@
 :warning: 진행중 :warning:
 
 
-:exclamation: 수정 :exclamation:
+
+:exclamation: 수정필요 :exclamation:
 
 이미지 저장 경로 변경(현재 덮어쓰기 오류,,,)
 
