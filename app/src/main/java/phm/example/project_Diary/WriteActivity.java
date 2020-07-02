@@ -57,6 +57,8 @@ public class WriteActivity extends AppCompatActivity {
 
     ImageView gallery;
     TextView title,mainText,time;
+    String UserList;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,13 +71,15 @@ public class WriteActivity extends AppCompatActivity {
         mainText = (TextView)findViewById(R.id.mainText);
         time=(TextView)findViewById(R.id.time);
 
-
-
         gallery.setOnClickListener(userPhotoIVClickListener);
         gallery.setBackground(new ShapeDrawable(new OvalShape()));
 
         Fuser = FirebaseAuth.getInstance().getCurrentUser();
 
+        Intent intent = getIntent();
+        UserList=intent.getStringExtra("UserList");
+
+/*
         Dreference = FirebaseDatabase.getInstance().getReference("Msg").child(Fuser.getUid());
         Dreference.addValueEventListener(new ValueEventListener() {
                 @Override
@@ -87,18 +91,18 @@ public class WriteActivity extends AppCompatActivity {
                         title.setText(diary.getTitle());
                         mainText.setText(diary.getMainText());
                         time.setText(diary.getTimestamp());
+
                         if (diary.getImageURL().equals("default")) {
                             gallery.setImageResource(R.drawable.ic_launcher_foreground);
-                            photo=false;
+                            photo = false;
                         } else {
                             FirebaseStorage storage = FirebaseStorage.getInstance();
                             StorageReference storageReference = storage.getReference("Msg/"+ diary.getImageURL());//채팅방 아이디도 추가해서 경로 지정해야함!
                             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                 @Override
                                 public void onSuccess(Uri uri) {
-
                                     Glide.with(getApplicationContext()).load(uri.toString()).into(gallery);
-                                    photo=true;
+                                    photo = true;
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -116,7 +120,7 @@ public class WriteActivity extends AppCompatActivity {
                 public void onCancelled(DatabaseError databaseError) {
                 }
         });
-
+*/
         if(Build.VERSION.SDK_INT >= 21) {
             gallery.setClipToOutline(true);
         }
@@ -148,35 +152,34 @@ public class WriteActivity extends AppCompatActivity {
 
             if (!validateForm()) return;
 
-            // 현재시간을 msec 으로 구한다.
-            long now = System.currentTimeMillis();
-            // 현재시간을 date 변수에 저장한다.
-            Date date = new Date(now);
-            // 시간을 나타냇 포맷을 정한다 ( yyyy/MM/dd 같은 형태로 변형 가능 )
-            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-            // nowDate 변수에 값을 저장한다.
-            formatDate = sdfNow.format(date);
+            long now = System.currentTimeMillis(); // 현재시간 msec로 구함
+            Date date = new Date(now); // 현재시간 date 변수에 저장
+            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm"); // 시간을 나타내는 포맷 지정
+            formatDate = sdfNow.format(date); // 변수에 값 저장
 
             final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-            reference = FirebaseDatabase.getInstance().getReference("Msg").child(Fuser.getUid());
+            reference = FirebaseDatabase.getInstance().getReference("Msg").child(UserList);
 
             HashMap<String, Object> map = new HashMap<>();
 
             w_title = title.getText().toString();
-            w_mainText=mainText.getText().toString();
-            map.put("title", w_title);
-            map.put("mainText", w_mainText);
-            if (userPhotoUri!=null||photo==true) {
+            w_mainText = mainText.getText().toString();
+
+            if (userPhotoUri!=null || photo==true) {
                 map.put("imageURL", uid);
-                reference.updateChildren(map);
+                //reference.updateChildren(map);
             }else{
                 map.put("imageURL", "default");
+                //reference.updateChildren(map);
             }
+            map.put("title", w_title);
+            map.put("mainText", w_mainText);
             map.put("id", Fuser.getUid());
             map.put("username",Fuser.getDisplayName());
             map.put("timestamp",formatDate);
+
+            // reference.push().~이면 랜덤자식이름으로 들어감
             reference.push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {

@@ -53,11 +53,8 @@ public class DiarysFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.diarys_fragment, container, false);
 
-        writeBtn=view.findViewById(R.id.write);
-        writeBtn.setOnClickListener(btnClick);
+        View view = inflater.inflate(R.layout.diarys_fragment, container, false);
 
         recyclerView = view.findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(true);
@@ -68,28 +65,18 @@ public class DiarysFragment extends Fragment {
 
         return view;
     }
-    Button.OnClickListener btnClick = new View.OnClickListener() {
-        public void onClick(final View view) {
-            Log.d("클릭","성공");
-            Intent intent=new Intent(getActivity(),WriteActivity.class); // 이동하려는 액티비티
-            startActivity(intent);
-        }
-    };
 
     private void readRooms(){
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Rooms").child(firebaseUser.getUid());;
-        Log.d("아이디",firebaseUser.getUid()+" ");
-        Log.d("아이디",reference+" ");
         reference.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 allRooms.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Log.d("아이디",dataSnapshot.getChildren()+" ");
+
                     Rooms room = snapshot.getValue(Rooms.class);
-                    Log.d("아이디",room+" ");
 
                     allRooms.add(room);
 

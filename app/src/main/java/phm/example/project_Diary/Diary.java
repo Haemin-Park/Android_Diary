@@ -8,7 +8,7 @@ public class Diary {
     private String timestamp;
     private String mainText;
 
-    public Diary(String id, String timestamp, String displayname, String imageURL) {
+    public Diary(String id, String displayname, String imageURL, String timestamp, String title, String mainText) {
         this.id = id;
         this.displayname = displayname;
         this.imageURL = imageURL;

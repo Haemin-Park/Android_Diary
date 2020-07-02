@@ -20,7 +20,6 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
     public DiarysAdapter(Context context, List<Rooms> rooms){
         this.context = context;
         this.rooms = rooms;
-        //this.status = status;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -53,9 +52,9 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
             @Override
             public void onClick(View view) {
                 {
-                    //TODO if문으로 이미 만들어져있을 경우 팝업 안띄우게--하려면 데이터베이스 구조를 바꿔야함(아니면 너무 번거롭고 길어짐)
+                    //TODO if문으로 이미 만들어져있을 경우 팝업 안띄우게 하려면 데이터베이스 구조를 바꿔야함(아니면 너무 번거롭고 길어짐)
                     Intent intent=new Intent(view.getContext(), DiarysActivity.class);
-                    //intent.putExtra("user", room.getId()); 정보줄때!!! 쓰자!!!
+                    intent.putExtra("UserList", room.getRoomUserList());
                     view.getContext().startActivity(intent);
                 }
             }//리스트 누르면 팝업창 생성

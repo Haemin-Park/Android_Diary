@@ -31,18 +31,23 @@ public class DiarysActivity extends AppCompatActivity {
     private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
     private DatabaseReference databaseReference = firebaseDatabase.getReference();
     FirebaseUser Fuser = FirebaseAuth.getInstance().getCurrentUser();
+    String UserList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diarys);
 
+        Intent intent = getIntent();
+        UserList=intent.getStringExtra("UserList");
+
         recyclerv = (RecyclerView)findViewById(R.id.recycler);
         recyclerv.setHasFixedSize(true);
         recyclerv.setLayoutManager(new LinearLayoutManager(DiarysActivity.this));
 
         allDiary = new ArrayList<>();
-        readUsers();
+
+        readMsgs();
 
         writeBtn=(Button)findViewById(R.id.write);
 
@@ -50,15 +55,15 @@ public class DiarysActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DiarysActivity.this, WriteActivity.class); // 이동하려는 액티비티
+                intent.putExtra("UserList",UserList);
                 startActivity(intent);
             }
         });
 
-            }
-    private void readUsers(){
+    }
+    private void readMsgs(){
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Msg");
-        DatabaseReference reference1 = FirebaseDatabase.getInstance().getReference("Rooms");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Msg").child(UserList);
         reference.addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -66,10 +71,8 @@ public class DiarysActivity extends AppCompatActivity {
                 allDiary.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Diary diary = snapshot.getValue(Diary.class);
+                    allDiary.add(diary);
 
-                {
-                        allDiary.add(diary);
-                    }
                 }
 
                 diaryAdapter = new DiaryAdapter(DiarysActivity.this, allDiary);
@@ -82,4 +85,4 @@ public class DiarysActivity extends AppCompatActivity {
             }
         });
     }
-        }
+}

@@ -27,12 +27,10 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
 
     private Context context;
     private List<Diary> Diary;
-    //private boolean status;
 
     public DiaryAdapter(Context context, List<Diary> Diary){
         this.context = context;
         this.Diary = Diary;
-        //this.status = status;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -74,7 +72,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 {
-                    //TODO 수정?
+                    //TODO 수정
 
                 }
             }//리스트 누르면 팝업창 생성
