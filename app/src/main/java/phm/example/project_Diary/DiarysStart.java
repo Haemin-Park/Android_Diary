@@ -43,10 +43,10 @@ public class DiarysStart extends Activity {
 
         name.setText(username1+"님과 채팅을 시작하겠습니까?");
 
-        UserList=userID+"@"+Fuser.getUid();
+        UserList = userID+"@"+Fuser.getUid();
         UserListchk=Fuser.getUid()+"@"+userID;
-        Roomname="@make@"+UserList;
-        Roomnamechk="@make@"+UserListchk;
+        Roomname = "@make@"+UserList; // 룸 네임이 필요할까 고민해보기
+        Roomnamechk = "@make@"+UserListchk;
 
         startbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,18 +58,20 @@ public class DiarysStart extends Activity {
                     RoomUsers(userID,Fuser.getUid());
             }
                 Intent intent=new Intent(DiarysStart.this, DiarysActivity.class);
-                intent.putExtra("roomname", Roomname);
+                intent.putExtra("UserList", UserList);
                 startActivity(intent);
+                finish();
             }
         }); //ok버튼을 누르면 데이터베이스에 채팅방 생성
     }
 
     public void createRoom(String id){
+
         databaseReference.child("Rooms").child(id).child(Roomname).child("roomUserList").setValue(UserList);
 
         Dreference = FirebaseDatabase.getInstance().getReference("Users").child(Fuser.getUid());
-
         username2=Fuser.getDisplayName();
+
         if(id==Fuser.getUid()){
         databaseReference.child("Rooms").child(id).child(Roomname).child("myusernm").setValue(username2);
         databaseReference.child("Rooms").child(id).child(Roomname).child("yourusernm").setValue(username1);

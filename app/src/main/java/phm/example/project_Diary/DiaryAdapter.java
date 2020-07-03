@@ -27,10 +27,12 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
 
     private Context context;
     private List<Diary> Diary;
+    String DID;
 
-    public DiaryAdapter(Context context, List<Diary> Diary){
+    public DiaryAdapter(Context context, List<Diary> Diary, String DID){
         this.context = context;
         this.Diary = Diary;
+        this.DID = DID;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -63,6 +65,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull DiaryAdapter.ViewHolder holder, int position) {
 
         final Diary diary = Diary.get(position);
+
         final DiaryAdapter.ViewHolder h=holder;
         holder.username.setText(diary.getDisplayname());
         holder.title.setText(diary.getTitle());
@@ -81,7 +84,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
             holder.msgImg.setBackgroundResource(R.drawable.ic_launcher_foreground);
         }else{
             FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageReference = storage.getReference("Msg/"+ diary.getImageURL());
+            StorageReference storageReference = storage.getReference("Msg/"+ DID +"/"+ diary.getTimestamp());
             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {

@@ -47,7 +47,7 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
 
         final Rooms room = rooms.get(position);
         final DiarysAdapter.ViewHolder h=holder;
-        holder.chatName.setText(room.getMyusernm()+", "+room.getYourusernm());
+        holder.chatName.setText(room.getMyusernm()+", "+room.getYourusernm()); // 일기장 참여자 목록
         holder.userbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

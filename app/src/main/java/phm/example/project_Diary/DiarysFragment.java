@@ -28,7 +28,7 @@ import java.util.List;
 public class DiarysFragment extends Fragment {
 
     Button writeBtn;
-/*
+    /*
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,7 +77,6 @@ public class DiarysFragment extends Fragment {
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
 
                     Rooms room = snapshot.getValue(Rooms.class);
-
                     allRooms.add(room);
 
                 }

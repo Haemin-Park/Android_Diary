@@ -28,9 +28,6 @@ public class DiarysActivity extends AppCompatActivity {
     private DiaryAdapter diaryAdapter;
     private List<Diary> allDiary;
 
-    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference databaseReference = firebaseDatabase.getReference();
-    FirebaseUser Fuser = FirebaseAuth.getInstance().getCurrentUser();
     String UserList;
 
     @Override
@@ -75,7 +72,7 @@ public class DiarysActivity extends AppCompatActivity {
 
                 }
 
-                diaryAdapter = new DiaryAdapter(DiarysActivity.this, allDiary);
+                diaryAdapter = new DiaryAdapter(DiarysActivity.this, allDiary, UserList);
                 recyclerv.setAdapter(diaryAdapter);
             }
 

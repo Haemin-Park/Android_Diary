@@ -44,7 +44,6 @@ import java.util.HashMap;
 public class WriteActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
-    DatabaseReference Dreference;
     DatabaseReference reference;
     FirebaseUser Fuser;
     String w_title="";
@@ -154,7 +153,7 @@ public class WriteActivity extends AppCompatActivity {
 
             long now = System.currentTimeMillis(); // 현재시간 msec로 구함
             Date date = new Date(now); // 현재시간 date 변수에 저장
-            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm"); // 시간을 나타내는 포맷 지정
+            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss"); // 시간을 나타내는 포맷 지정
             formatDate = sdfNow.format(date); // 변수에 값 저장
 
             final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -179,7 +178,7 @@ public class WriteActivity extends AppCompatActivity {
             map.put("username",Fuser.getDisplayName());
             map.put("timestamp",formatDate);
 
-            // reference.push().~이면 랜덤자식이름으로 들어감
+            // reference.push().~: 랜덤자식이름으로 들어감
             reference.push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -203,7 +202,7 @@ public class WriteActivity extends AppCompatActivity {
                                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                                 byte[] data = baos.toByteArray();
-                                FirebaseStorage.getInstance().getReference().child("Msg/" + uid).putBytes(data);
+                                FirebaseStorage.getInstance().getReference().child("Msg/" + UserList + "/" +formatDate).putBytes(data);
 
                             }
                         });
