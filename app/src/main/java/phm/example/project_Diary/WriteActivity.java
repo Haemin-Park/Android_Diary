@@ -85,10 +85,11 @@ public class WriteActivity extends AppCompatActivity {
         UserList = intent.getStringExtra("UserList");
         postId = intent.getStringExtra("postId");
 
-        firstSet(); // 초기 세팅
-
         saveBtn =(Button)findViewById(R.id.textSave);
         saveBtn.setOnClickListener(saveBtnClickListener);
+
+        firstSet(); // 초기 세팅
+
 
     }
 
