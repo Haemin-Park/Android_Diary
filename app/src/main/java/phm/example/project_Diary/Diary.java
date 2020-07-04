@@ -7,14 +7,16 @@ public class Diary {
     private String title;
     private String timestamp;
     private String mainText;
+    private String postId;
 
-    public Diary(String id, String displayname, String imageURL, String timestamp, String title, String mainText) {
+    public Diary(String id, String displayname, String imageURL, String timestamp, String title, String mainText, String postId) {
         this.id = id;
         this.displayname = displayname;
         this.imageURL = imageURL;
         this.timestamp= timestamp;
         this.title = title;
         this.mainText = mainText;
+        this.postId = postId;
     }
     public Diary(){
 
@@ -66,6 +68,14 @@ public class Diary {
 
     public void setMainText(String mainText) {
         this.mainText = mainText;
+    }
+
+    public String getpostId() {
+        return postId;
+    }
+
+    public void setpostId(String postId) {
+        this.postId = postId;
     }
 
 }

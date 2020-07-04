@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -40,23 +41,27 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class WriteActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     DatabaseReference reference;
     FirebaseUser Fuser;
-    String w_title="";
-    String w_mainText="";
-    String formatDate;
-    Boolean photo;
+    String Wtitle="";
+    String WmainText="";
+    String WformatDate;
+    Boolean photo = false, modify = false;
 
     private static final int PICK_FROM_ALBUM = 1;
     Uri userPhotoUri;
 
     ImageView gallery;
     TextView title,mainText,time;
-    String UserList;
+    String UserList, Stitle = "", SmainText = "", Stime = "", Sgallery = "default";
+
+    Intent intent;
+    String postId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,65 +73,23 @@ public class WriteActivity extends AppCompatActivity {
         gallery = (ImageView) findViewById(R.id.gallery);
         title = (TextView)findViewById(R.id.title);
         mainText = (TextView)findViewById(R.id.mainText);
-        time=(TextView)findViewById(R.id.time);
+        time = (TextView)findViewById(R.id.time);
 
         gallery.setOnClickListener(userPhotoIVClickListener);
         gallery.setBackground(new ShapeDrawable(new OvalShape()));
 
         Fuser = FirebaseAuth.getInstance().getCurrentUser();
 
-        Intent intent = getIntent();
-        UserList=intent.getStringExtra("UserList");
+        intent = getIntent();
+        UserList = intent.getStringExtra("UserList");
+        postId = intent.getStringExtra("postId");
 
-/*
-        Dreference = FirebaseDatabase.getInstance().getReference("Msg").child(Fuser.getUid());
-        Dreference.addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(final DataSnapshot dataSnapshot) {
-
-                    if(dataSnapshot.exists()){
-                        Diary diary = dataSnapshot.getValue(Diary.class);
-
-                        title.setText(diary.getTitle());
-                        mainText.setText(diary.getMainText());
-                        time.setText(diary.getTimestamp());
-
-                        if (diary.getImageURL().equals("default")) {
-                            gallery.setImageResource(R.drawable.ic_launcher_foreground);
-                            photo = false;
-                        } else {
-                            FirebaseStorage storage = FirebaseStorage.getInstance();
-                            StorageReference storageReference = storage.getReference("Msg/"+ diary.getImageURL());//채팅방 아이디도 추가해서 경로 지정해야함!
-                            storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    Glide.with(getApplicationContext()).load(uri.toString()).into(gallery);
-                                    photo = true;
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception exception) {
-                                    // Handle any errors
-                                }
-                            });
-                    }
-
-                    }
-                }
-
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-        });
-*/
-        if(Build.VERSION.SDK_INT >= 21) {
-            gallery.setClipToOutline(true);
-        }
+        firstSet(); // 초기 세팅
 
         Button saveBtn =(Button)findViewById(R.id.textSave);
         saveBtn.setOnClickListener(saveBtnClickListener);
     }
+
     Button.OnClickListener userPhotoIVClickListener = new View.OnClickListener() {
         public void onClick(final View view) {
             Intent intent = new Intent(Intent.ACTION_PICK);
@@ -134,8 +97,6 @@ public class WriteActivity extends AppCompatActivity {
             startActivityForResult(intent, PICK_FROM_ALBUM);
         }
     };
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -154,62 +115,153 @@ public class WriteActivity extends AppCompatActivity {
             long now = System.currentTimeMillis(); // 현재시간 msec로 구함
             Date date = new Date(now); // 현재시간 date 변수에 저장
             SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss"); // 시간을 나타내는 포맷 지정
-            formatDate = sdfNow.format(date); // 변수에 값 저장
+            WformatDate = sdfNow.format(date); // 변수에 값 저장
 
-            final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            Wtitle = title.getText().toString();
+            WmainText = mainText.getText().toString();
 
-            reference = FirebaseDatabase.getInstance().getReference("Msg").child(UserList);
+            if(modify==true)
+                modify();
+            else
+                insert();
 
-            HashMap<String, Object> map = new HashMap<>();
 
-            w_title = title.getText().toString();
-            w_mainText = mainText.getText().toString();
+        }// onclick 끝
 
-            if (userPhotoUri!=null || photo==true) {
-                map.put("imageURL", uid);
-                //reference.updateChildren(map);
-            }else{
-                map.put("imageURL", "default");
-                //reference.updateChildren(map);
-            }
-            map.put("title", w_title);
-            map.put("mainText", w_mainText);
-            map.put("id", Fuser.getUid());
-            map.put("username",Fuser.getDisplayName());
-            map.put("timestamp",formatDate);
 
-            // reference.push().~: 랜덤자식이름으로 들어감
-            reference.push().setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    if(task.isSuccessful()){
-                        Toast.makeText(WriteActivity.this, "일기 추가", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            });
-
-            if (userPhotoUri==null) {
-
-            } else {
-                // small image
-                Glide.with(getApplicationContext())
-                        .asBitmap()
-                        .load(userPhotoUri)
-                        .apply(new RequestOptions().override(200, 200))
-                        .into(new SimpleTarget<Bitmap>() {
-                            @Override
-                            public void onResourceReady(Bitmap bitmap, Transition<? super Bitmap> transition) {
-                                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                                byte[] data = baos.toByteArray();
-                                FirebaseStorage.getInstance().getReference().child("Msg/" + UserList + "/" +formatDate).putBytes(data);
-
-                            }
-                        });
-            }
-
-        }
     };
+
+    public void firstSet(){
+
+        Stitle = intent.getStringExtra("title");
+        SmainText = intent.getStringExtra("mainText");
+        Stime = intent.getStringExtra("time");
+        Sgallery = intent.getStringExtra("gallery");
+
+        if(Stime != null) { // 수정하기 위해 접근한다면 시간 데이터는 반드시 존재
+
+            modify = true; // 수정이 가능한 상태
+
+            title.setText(Stitle);
+            mainText.setText(SmainText);
+            time.setText(Stime);
+
+            if (Sgallery.equals("default")) {
+                gallery.setImageResource(R.drawable.ic_launcher_foreground);
+                photo = false;
+            } else {
+                FirebaseStorage storage = FirebaseStorage.getInstance();
+                StorageReference storageReference = storage.getReference("Msg/" + UserList + "/" + postId);//채팅방 아이디도 추가해서 경로 지정해야함!
+                storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Glide.with(getApplicationContext()).load(uri.toString()).into(gallery);
+                        photo = true;
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle any errors
+                    }
+                });
+            }
+        }
+    }
+
+    public void insert(){
+
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        reference = FirebaseDatabase.getInstance().getReference("Msg").child(UserList).push();
+
+        postId = reference.getKey();
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        if (userPhotoUri != null || photo) {
+            map.put("imageURL", postId);
+        }else{
+            map.put("imageURL", "default");
+        }
+        map.put("title", Wtitle);
+        map.put("mainText", WmainText);
+        map.put("id", Fuser.getUid());
+        map.put("username",Fuser.getDisplayName());
+        map.put("timestamp",WformatDate);
+        map.put("postId",postId);
+
+        reference.setValue(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(WriteActivity.this, "일기 추가", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        if (userPhotoUri == null) {
+
+        } else {
+            // small image
+            Glide.with(getApplicationContext())
+                    .asBitmap()
+                    .load(userPhotoUri)
+                    .apply(new RequestOptions().override(200, 200))
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap bitmap, Transition<? super Bitmap> transition) {
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                            byte[] data = baos.toByteArray();
+                            FirebaseStorage.getInstance().getReference().child("Msg/" + UserList + "/" +postId).putBytes(data);
+
+                        }
+                    });
+        }
+
+    }
+
+    public void modify(){
+
+        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        reference = FirebaseDatabase.getInstance().getReference("Msg").child(UserList).child(postId);
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("title", Wtitle);
+        map.put("mainText", WmainText);
+        map.put("timestamp",WformatDate);
+
+        reference.updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(WriteActivity.this, "일기 수정", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        if (userPhotoUri==null) {
+
+        } else {
+            // small image
+            Glide.with(getApplicationContext())
+                    .asBitmap()
+                    .load(userPhotoUri)
+                    .apply(new RequestOptions().override(200, 200))
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap bitmap, Transition<? super Bitmap> transition) {
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                            byte[] data = baos.toByteArray();
+                            FirebaseStorage.getInstance().getReference().child("Msg/" + UserList + "/" + postId).putBytes(data);
+
+                        }
+                    });
+        }
+
+    }
 
     private boolean validateForm () {
         boolean valid = true;

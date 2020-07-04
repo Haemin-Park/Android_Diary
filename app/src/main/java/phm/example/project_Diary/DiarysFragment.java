@@ -27,26 +27,6 @@ import java.util.List;
 
 public class DiarysFragment extends Fragment {
 
-    Button writeBtn;
-    /*
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.diarys_fragment, container, false);
-
-        writeBtn=view.findViewById(R.id.write);
-        writeBtn.setOnClickListener(btnClick);
-
-        return view;
-    }
-
-    Button.OnClickListener btnClick = new View.OnClickListener() {
-        public void onClick(final View view) {
-            Log.d("클릭","성공");
-            Intent intent=new Intent(getActivity(),WriteActivity.class); // 이동하려는 액티비티
-            startActivity(intent);
-        }
-    };*/
     private RecyclerView recyclerView;
     private DiarysAdapter diarysAdapter;
     private List<Rooms> allRooms;

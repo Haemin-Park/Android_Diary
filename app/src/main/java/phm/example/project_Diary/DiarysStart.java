@@ -80,12 +80,10 @@ public class DiarysStart extends Activity {
             databaseReference.child("Rooms").child(id).child(Roomname).child("myusernm").setValue(username1);
             databaseReference.child("Rooms").child(id).child(Roomname).child("yourusernm").setValue(username2);}
     }
+
     public void RoomUsers(String id,String id2){
         databaseReference.child("RoomUsers").child(Roomname).child(id).setValue("true");
         databaseReference.child("RoomUsers").child(Roomname).child(id2).setValue("true");
     }
-
-
-
 
 }

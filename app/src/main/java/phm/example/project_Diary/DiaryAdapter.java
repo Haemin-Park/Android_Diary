@@ -1,12 +1,14 @@
 package phm.example.project_Diary;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -27,12 +29,12 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
 
     private Context context;
     private List<Diary> Diary;
-    String DID;
+    String UserList;
 
-    public DiaryAdapter(Context context, List<Diary> Diary, String DID){
+    public DiaryAdapter(Context context, List<Diary> Diary, String UserList){//DID: 일기장 아이디
         this.context = context;
         this.Diary = Diary;
-        this.DID = DID;
+        this.UserList = UserList;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -75,7 +77,18 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 {
-                    //TODO 수정
+
+                    Intent intent = new Intent(context, WriteActivity.class); // 이동하려는 액티비티
+
+                    intent.putExtra("UserList",UserList);
+                    intent.putExtra("postId",diary.getpostId());
+
+                    intent.putExtra("title",diary.getTitle());
+                    intent.putExtra("mainText",diary.getMainText());
+                    intent.putExtra("time",diary.getTimestamp());
+                    intent.putExtra("gallery",diary.getImageURL());
+
+                    context.startActivity(intent);
 
                 }
             }//리스트 누르면 팝업창 생성
@@ -84,7 +97,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
             holder.msgImg.setBackgroundResource(R.drawable.ic_launcher_foreground);
         }else{
             FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageReference = storage.getReference("Msg/"+ DID +"/"+ diary.getTimestamp());
+            StorageReference storageReference = storage.getReference("Msg/"+ UserList +"/"+ diary.getpostId());
             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
