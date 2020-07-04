@@ -11,4 +11,4 @@
 
 ~~일기장 새로 형성시 오류 해결~~
 
-writeActivity 글 수정할 때 고려하기 
+~~writeActivity 글 수정할 때 고려하기~~ 
