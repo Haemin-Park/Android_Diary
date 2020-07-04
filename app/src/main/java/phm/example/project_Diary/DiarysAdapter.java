@@ -15,11 +15,11 @@ import java.util.List;
 
 public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder> {
     private Context context;
-    private List<Rooms> rooms;
+    private List<DiaryRoom> diarys;
 
-    public DiarysAdapter(Context context, List<Rooms> rooms){
+    public DiarysAdapter(Context context, List<DiaryRoom> diarys){
         this.context = context;
-        this.rooms = rooms;
+        this.diarys = diarys;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -45,16 +45,15 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull DiarysAdapter.ViewHolder holder, int position) {
 
-        final Rooms room = rooms.get(position);
+        final DiaryRoom diary = diarys.get(position);
         final DiarysAdapter.ViewHolder h=holder;
-        holder.chatName.setText(room.getMyusernm()+", "+room.getYourusernm()); // 일기장 참여자 목록
+        holder.chatName.setText(diary.getMyName()+", "+diary.getFriendName()); // 일기장 참여자 목록
         holder.userbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 {
-                    //TODO if문으로 이미 만들어져있을 경우 팝업 안띄우게 하려면 데이터베이스 구조를 바꿔야함(아니면 너무 번거롭고 길어짐)
                     Intent intent=new Intent(view.getContext(), DiarysActivity.class);
-                    intent.putExtra("UserList", room.getRoomUserList());
+                    intent.putExtra("UserList", diary.getDiarysUserList());
                     view.getContext().startActivity(intent);
                 }
             }//리스트 누르면 팝업창 생성
@@ -63,6 +62,6 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
 
     @Override
     public int getItemCount() {
-        return rooms.size();
+        return diarys.size();
     }
 }

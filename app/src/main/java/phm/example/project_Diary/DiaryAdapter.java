@@ -31,7 +31,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
     private List<Diary> Diary;
     String UserList;
 
-    public DiaryAdapter(Context context, List<Diary> Diary, String UserList){//DID: 일기장 아이디
+    public DiaryAdapter(Context context, List<Diary> Diary, String UserList){
         this.context = context;
         this.Diary = Diary;
         this.UserList = UserList;
@@ -82,11 +82,12 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
 
                     intent.putExtra("UserList",UserList);
                     intent.putExtra("postId",diary.getpostId());
-
+                    intent.putExtra("WriterId",diary.getId());
                     intent.putExtra("title",diary.getTitle());
                     intent.putExtra("mainText",diary.getMainText());
                     intent.putExtra("time",diary.getTimestamp());
                     intent.putExtra("gallery",diary.getImageURL());
+                    // 간단히 할 수 있는 방법 없을까 고민
 
                     context.startActivity(intent);
 
@@ -97,7 +98,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
             holder.msgImg.setBackgroundResource(R.drawable.ic_launcher_foreground);
         }else{
             FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageReference = storage.getReference("Msg/"+ UserList +"/"+ diary.getpostId());
+            StorageReference storageReference = storage.getReference("Diarys/"+ UserList +"/"+ diary.getpostId());
             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {

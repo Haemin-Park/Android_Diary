@@ -1,12 +1,9 @@
 package phm.example.project_Diary;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -29,7 +26,7 @@ public class DiarysFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private DiarysAdapter diarysAdapter;
-    private List<Rooms> allRooms;
+    private List<DiaryRoom> allDiaryRoom;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,28 +37,28 @@ public class DiarysFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        allRooms = new ArrayList<>();
-        readRooms();
+        allDiaryRoom = new ArrayList<>();
+        readDiaryRoom();
 
         return view;
     }
 
-    private void readRooms(){
+    private void readDiaryRoom(){
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Rooms").child(firebaseUser.getUid());;
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("DiaryRoom").child(firebaseUser.getUid());;
         reference.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                allRooms.clear();
+                allDiaryRoom.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
 
-                    Rooms room = snapshot.getValue(Rooms.class);
-                    allRooms.add(room);
+                    DiaryRoom room = snapshot.getValue(DiaryRoom.class);
+                    allDiaryRoom.add(room);
 
                 }
 
-                diarysAdapter = new DiarysAdapter(getContext(), allRooms);
+                diarysAdapter = new DiarysAdapter(getContext(), allDiaryRoom);
                 recyclerView.setAdapter(diarysAdapter);
             }
 

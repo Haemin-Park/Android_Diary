@@ -57,8 +57,9 @@ public class WriteActivity extends AppCompatActivity {
     Uri userPhotoUri;
 
     ImageView gallery;
-    TextView title,mainText,time;
-    String UserList, Stitle = "", SmainText = "", Stime = "", Sgallery = "default";
+    TextView title, mainText, time;
+    Button saveBtn;
+    String UserList, StrTitle , StrMainText , StrTime , StrGallery , WriterId;
 
     Intent intent;
     String postId;
@@ -86,8 +87,9 @@ public class WriteActivity extends AppCompatActivity {
 
         firstSet(); // 초기 세팅
 
-        Button saveBtn =(Button)findViewById(R.id.textSave);
+        saveBtn =(Button)findViewById(R.id.textSave);
         saveBtn.setOnClickListener(saveBtnClickListener);
+
     }
 
     Button.OnClickListener userPhotoIVClickListener = new View.OnClickListener() {
@@ -126,6 +128,7 @@ public class WriteActivity extends AppCompatActivity {
                 insert();
 
 
+            finish();
         }// onclick 끝
 
 
@@ -133,25 +136,32 @@ public class WriteActivity extends AppCompatActivity {
 
     public void firstSet(){
 
-        Stitle = intent.getStringExtra("title");
-        SmainText = intent.getStringExtra("mainText");
-        Stime = intent.getStringExtra("time");
-        Sgallery = intent.getStringExtra("gallery");
+        StrTitle = intent.getStringExtra("title");
+        StrMainText = intent.getStringExtra("mainText");
+        StrTime = intent.getStringExtra("time");
+        StrGallery = intent.getStringExtra("gallery");
+        WriterId =  intent.getStringExtra("WriterId");
 
-        if(Stime != null) { // 수정하기 위해 접근한다면 시간 데이터는 반드시 존재
+        if(StrTime != null) {
 
-            modify = true; // 수정이 가능한 상태
+            if(WriterId.equals(Fuser.getUid()))
+                modify = true; // 수정이 가능한 상태
 
-            title.setText(Stitle);
-            mainText.setText(SmainText);
-            time.setText(Stime);
+            if(modify) // 본인이 작성한 일기라면 저장버튼 보임
+                saveBtn.setVisibility(View.VISIBLE);
+            else // 친구의 글이라면 저장버튼 보이지 않음
+                saveBtn.setVisibility(View.INVISIBLE);
 
-            if (Sgallery.equals("default")) {
+            title.setText(StrTitle);
+            mainText.setText(StrMainText);
+            time.setText(StrTime);
+
+            if (StrGallery.equals("default")) {
                 gallery.setImageResource(R.drawable.ic_launcher_foreground);
                 photo = false;
             } else {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageReference = storage.getReference("Msg/" + UserList + "/" + postId);//채팅방 아이디도 추가해서 경로 지정해야함!
+                StorageReference storageReference = storage.getReference("Diarys/" + UserList + "/" + postId);
                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -165,13 +175,16 @@ public class WriteActivity extends AppCompatActivity {
                     }
                 });
             }
+
+
         }
+
     }
 
     public void insert(){
 
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        reference = FirebaseDatabase.getInstance().getReference("Msg").child(UserList).push();
+        reference = FirebaseDatabase.getInstance().getReference("Diarys").child(UserList).push();
 
         postId = reference.getKey();
 
@@ -212,7 +225,7 @@ public class WriteActivity extends AppCompatActivity {
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                             byte[] data = baos.toByteArray();
-                            FirebaseStorage.getInstance().getReference().child("Msg/" + UserList + "/" +postId).putBytes(data);
+                            FirebaseStorage.getInstance().getReference().child("Diarys/" + UserList + "/" +postId).putBytes(data);
 
                         }
                     });
@@ -224,9 +237,15 @@ public class WriteActivity extends AppCompatActivity {
 
         final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        reference = FirebaseDatabase.getInstance().getReference("Msg").child(UserList).child(postId);
+        reference = FirebaseDatabase.getInstance().getReference("Diarys").child(UserList).child(postId);
 
         Map<String, Object> map = new HashMap<>();
+
+        if (userPhotoUri != null || photo) {
+            map.put("imageURL", postId);
+        }else{
+            map.put("imageURL", "default");
+        }
 
         map.put("title", Wtitle);
         map.put("mainText", WmainText);
@@ -255,7 +274,7 @@ public class WriteActivity extends AppCompatActivity {
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                             byte[] data = baos.toByteArray();
-                            FirebaseStorage.getInstance().getReference().child("Msg/" + UserList + "/" + postId).putBytes(data);
+                            FirebaseStorage.getInstance().getReference().child("Diarys/" + UserList + "/" + postId).putBytes(data);
 
                         }
                     });

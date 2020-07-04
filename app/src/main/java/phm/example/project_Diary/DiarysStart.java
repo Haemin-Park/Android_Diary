@@ -12,13 +12,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
+
 public class DiarysStart extends Activity {
-    String userID="";
-    String Roomname="";
-    String Roomnamechk="";
-    String UserList="";
-    String UserListchk="";
-    String username1,username2="";
+
+    String Diarysname,UserList, friendID, myName, friendName;
 
     TextView name;
 
@@ -38,26 +37,29 @@ public class DiarysStart extends Activity {
         startbtn = (Button) findViewById(R.id.startbtn);
         Intent intent = getIntent();
 
-        userID = intent.getStringExtra("user");
-        username1 = intent.getStringExtra("username");//채팅할 상대
+        friendID = intent.getStringExtra("user"); // 채팅 상대
+        friendName = intent.getStringExtra("username"); //채팅 상대
 
-        name.setText(username1+"님과 채팅을 시작하겠습니까?");
+        name.setText(friendName+"님과 채팅을 시작하겠습니까?");
 
-        UserList = userID+"@"+Fuser.getUid();
-        UserListchk=Fuser.getUid()+"@"+userID;
-        Roomname = "@make@"+UserList; // 룸 네임이 필요할까 고민해보기
-        Roomnamechk = "@make@"+UserListchk;
+        String[] arr={friendID, Fuser.getUid()};
+        Arrays.sort(arr);
+
+        UserList = arr[0]+"@"+arr[1]; // 소팅 후 유저리스트 생성(같은 방이 두개 생기지 않게 하기 위함)
+
+        Diarysname = UserList; // 다이어리 이름도 유저 리스트로
 
         startbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!databaseReference.child("Rooms").child(userID).child(Roomnamechk).child("roomUserList").getKey().equals(UserListchk)) {
-                    createRoom(userID);
-                    createRoom(Fuser.getUid());
+                if(!databaseReference.child("DiaryRoom").child(friendID).child(Diarysname).child("diarysUserList").getKey().equals(Diarysname)) {
+                    createDiarys(friendID);
+                    createDiarys(Fuser.getUid());
 
-                    RoomUsers(userID,Fuser.getUid());
-            }
-                Intent intent=new Intent(DiarysStart.this, DiarysActivity.class);
+                    DiarysUsers(Fuser.getUid(),friendID);
+                }
+
+                Intent intent = new Intent(DiarysStart.this, DiarysActivity.class);
                 intent.putExtra("UserList", UserList);
                 startActivity(intent);
                 finish();
@@ -65,25 +67,26 @@ public class DiarysStart extends Activity {
         }); //ok버튼을 누르면 데이터베이스에 채팅방 생성
     }
 
-    public void createRoom(String id){
+    public void createDiarys(String id){
 
-        databaseReference.child("Rooms").child(id).child(Roomname).child("roomUserList").setValue(UserList);
+        databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("diarysUserList").setValue(UserList);
 
         Dreference = FirebaseDatabase.getInstance().getReference("Users").child(Fuser.getUid());
-        username2=Fuser.getDisplayName();
+        myName = Fuser.getDisplayName();
 
-        if(id==Fuser.getUid()){
-        databaseReference.child("Rooms").child(id).child(Roomname).child("myusernm").setValue(username2);
-        databaseReference.child("Rooms").child(id).child(Roomname).child("yourusernm").setValue(username1);
+        if(id == Fuser.getUid()){
+        databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("myName").setValue(myName);
+        databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("friendName").setValue(friendName);
 
-       }else{
-            databaseReference.child("Rooms").child(id).child(Roomname).child("myusernm").setValue(username1);
-            databaseReference.child("Rooms").child(id).child(Roomname).child("yourusernm").setValue(username2);}
+       } else{
+            databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("myName").setValue(friendName);
+            databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("friendName").setValue(myName);
+        }
     }
 
-    public void RoomUsers(String id,String id2){
-        databaseReference.child("RoomUsers").child(Roomname).child(id).setValue("true");
-        databaseReference.child("RoomUsers").child(Roomname).child(id2).setValue("true");
+    public void DiarysUsers(String mid, String fid){
+        databaseReference.child("DiarysUserList").child(Diarysname).child(mid).setValue("true");
+        databaseReference.child("DiarysUserList").child(Diarysname).child(fid).setValue("true");
     }
 
 }

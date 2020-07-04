@@ -26,7 +26,7 @@ public class DiarysActivity extends AppCompatActivity {
     Button writeBtn;
     private RecyclerView recyclerv;
     private DiaryAdapter diaryAdapter;
-    private List<Diary> allDiary;
+    private List<Diary> allDiarys;
 
     String UserList;
 
@@ -36,15 +36,15 @@ public class DiarysActivity extends AppCompatActivity {
         setContentView(R.layout.activity_diarys);
 
         Intent intent = getIntent();
-        UserList=intent.getStringExtra("UserList");
+        UserList = intent.getStringExtra("UserList");
 
         recyclerv = (RecyclerView)findViewById(R.id.recycler);
         recyclerv.setHasFixedSize(true);
         recyclerv.setLayoutManager(new LinearLayoutManager(DiarysActivity.this));
 
-        allDiary = new ArrayList<>();
+        allDiarys = new ArrayList<>();
 
-        readMsgs();
+        readDiarys();
 
         writeBtn=(Button)findViewById(R.id.write);
 
@@ -58,21 +58,21 @@ public class DiarysActivity extends AppCompatActivity {
         });
 
     }
-    private void readMsgs(){
+    private void readDiarys(){
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Msg").child(UserList);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Diarys").child(UserList);
         reference.addValueEventListener(new ValueEventListener() {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                allDiary.clear();
+                allDiarys.clear();
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Diary diary = snapshot.getValue(Diary.class);
-                    allDiary.add(diary);
+                    allDiarys.add(diary);
 
                 }
 
-                diaryAdapter = new DiaryAdapter(DiarysActivity.this, allDiary, UserList);
+                diaryAdapter = new DiaryAdapter(DiarysActivity.this, allDiarys, UserList);
                 recyclerv.setAdapter(diaryAdapter);
             }
 
