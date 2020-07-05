@@ -67,7 +67,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.userbt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-       {//TODO if문으로 이미 만들어져있을 경우 팝업 안띄우게--하려면 데이터베이스 구조를 바꿔야함(아니면 너무 번거롭고 길어짐)
+       {
                     Intent intent=new Intent(view.getContext(), DiarysStart.class);
                     intent.putExtra("user", user.getId());
                     intent.putExtra("username", user.getDisplayname());

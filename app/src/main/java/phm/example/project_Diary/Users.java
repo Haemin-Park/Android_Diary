@@ -4,7 +4,6 @@ public class Users {
     private String id;
     private String displayname;
     private String imageURL;
-    private String room;
 
     public Users(String id, String displayname, String imageURL) {
         this.id = id;
@@ -21,11 +20,6 @@ public class Users {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-
-    public String getRoom() {
-        return room;
     }
 
     public String getDisplayname() {

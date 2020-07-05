@@ -125,6 +125,7 @@ public class SignupActivity extends AppCompatActivity {
                                 }
                             });
 
+
                         }
                         else{
                             Toast.makeText(SignupActivity.this, "해당 계정을 생성할 수 없습니다.", Toast.LENGTH_SHORT).show();
