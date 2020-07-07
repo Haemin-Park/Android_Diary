@@ -56,7 +56,7 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
                     intent.putExtra("UserList", diary.getDiarysUserList());
                     view.getContext().startActivity(intent);
                 }
-            }//리스트 누르면 팝업창 생성
+            }
         });
     }
 

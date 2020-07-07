@@ -19,28 +19,6 @@
         android:layout_centerVertical="true"
         android:textSize="15sp"
         android:layout_marginLeft="10dp"
-        android:text="청파동 불주먹"/>
-
-    <ImageView
-        android:id="@+id/status_on"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginTop="12dp"
-        android:tint="#B8EF8F"
-        android:visibility="gone"
-        android:layout_below="@+id/userListName"
-        android:layout_toRightOf="@+id/userListImage"
-        android:layout_toEndOf="@+id/userListImage"/>
-
-    <ImageView
-        android:id="@+id/status_off"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:layout_marginTop="12dp"
-        android:tint="#CBCECA"
-        android:visibility="gone"
-        android:layout_below="@+id/userListName"
-        android:layout_toRightOf="@+id/userListImage"
-        android:layout_toEndOf="@+id/userListImage"/>
+        android:text="작성자"/>
 
 </RelativeLayout>

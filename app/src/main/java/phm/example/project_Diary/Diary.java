@@ -1,17 +1,19 @@
 package phm.example.project_Diary;
 
-public class Diary {
+import java.io.Serializable;
+
+public class Diary implements Serializable {
     private String id;
-    private String displayname;
+    private String username;
     private String imageURL;
     private String title;
     private String timestamp;
     private String mainText;
     private String postId;
 
-    public Diary(String id, String displayname, String imageURL, String timestamp, String title, String mainText, String postId) {
+    public Diary(String id, String username, String imageURL, String timestamp, String title, String mainText, String postId) {
         this.id = id;
-        this.displayname = displayname;
+        this.username = username;
         this.imageURL = imageURL;
         this.timestamp= timestamp;
         this.title = title;
@@ -30,12 +32,12 @@ public class Diary {
         this.id = id;
     }
 
-    public String getDisplayname() {
-        return displayname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setDisplayname(String displayname) {
-        this.displayname = displayname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getImageURL() {

@@ -51,8 +51,6 @@ public class FriendFragment extends Fragment {
 
                 rf = FirebaseDatabase.getInstance().getReference("Users").child(str);
 
-                frf = FirebaseDatabase.getInstance().getReference("FriendsList").child(firebaseUser.getUid());
-
                 if(rf.getKey().equals(str)){
 
                     HashMap<String, Object> map = new HashMap<>();
@@ -65,33 +63,6 @@ public class FriendFragment extends Fragment {
                     map2.put("fid", firebaseUser.getUid()); // 친구의 친구목록에 나 추가
                     frf.setValue(map2);
                 }
-
-                frf.addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                            //Users user = snapshot.getValue(Users.class);
-
-                            /*
-                            if(user.getId().equals(str)){
-                                HashMap<String, Object> map = new HashMap<>();
-                                map.put("fid", str);
-                                frf.setValue(map);
-                            }
-                            else
-                                search.setText("검색한 친구가 없습니다.");
-
-                             */
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
 
             }
         });
@@ -153,34 +124,4 @@ public class FriendFragment extends Fragment {
 
     }
 
-/*
-    private void readUsers(){
-        final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Users");
-
-        reference.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                allUsers.clear();
-                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    Users user = snapshot.getValue(Users.class);
-
-                    if(!user.getId().equals(firebaseUser.getUid())){
-                        allUsers.add(user);
-                    }
-                }
-
-                userAdapter = new UserAdapter(getContext(), allUsers);
-                recyclerView.setAdapter(userAdapter);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
- */
 }

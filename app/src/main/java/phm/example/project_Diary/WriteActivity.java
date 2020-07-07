@@ -59,6 +59,7 @@ public class WriteActivity extends AppCompatActivity {
     ImageView gallery;
     TextView title, mainText, time;
     Button saveBtn;
+    Diary diary;
     String UserList, StrTitle , StrMainText , StrTime , StrGallery , WriterId;
 
     Intent intent;
@@ -80,10 +81,6 @@ public class WriteActivity extends AppCompatActivity {
         gallery.setBackground(new ShapeDrawable(new OvalShape()));
 
         Fuser = FirebaseAuth.getInstance().getCurrentUser();
-
-        intent = getIntent();
-        UserList = intent.getStringExtra("UserList");
-        postId = intent.getStringExtra("postId");
 
         saveBtn =(Button)findViewById(R.id.textSave);
         saveBtn.setOnClickListener(saveBtnClickListener);
@@ -123,7 +120,7 @@ public class WriteActivity extends AppCompatActivity {
             Wtitle = title.getText().toString();
             WmainText = mainText.getText().toString();
 
-            if(modify==true)
+            if(modify)
                 modify();
             else
                 insert();
@@ -137,13 +134,20 @@ public class WriteActivity extends AppCompatActivity {
 
     public void firstSet(){
 
-        StrTitle = intent.getStringExtra("title");
-        StrMainText = intent.getStringExtra("mainText");
-        StrTime = intent.getStringExtra("time");
-        StrGallery = intent.getStringExtra("gallery");
-        WriterId =  intent.getStringExtra("WriterId");
+        intent = getIntent();
 
-        if(StrTime != null) {
+        UserList = intent.getStringExtra("UserList");
+
+        diary = (Diary)intent.getSerializableExtra("diary");
+
+        if(diary != null) {
+
+            postId = diary.getpostId();
+            StrTitle = diary.getTitle();
+            StrMainText = diary.getMainText();
+            StrTime = diary.getTimestamp();
+            StrGallery = diary.getImageURL();
+            WriterId =  diary.getId();
 
             if(WriterId.equals(Fuser.getUid()))
                 modify = true; // 수정이 가능한 상태

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,10 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -38,16 +42,20 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        public LinearLayout msgImg;
+
+        public ImageView profile;
         public TextView username;
+        public LinearLayout diaryImg;
         public TextView title;
         public TextView timestamp;
         public TextView mainText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            msgImg=itemView.findViewById(R.id.backImgset);
+
+            profile = itemView.findViewById(R.id.profileImg);
             username = itemView.findViewById(R.id.username);
+            diaryImg = itemView.findViewById(R.id.backImgset);
             title = itemView.findViewById(R.id.title);
             timestamp = itemView.findViewById(R.id.date);
             mainText = itemView.findViewById(R.id.maintext);
@@ -68,45 +76,62 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
 
         final Diary diary = Diary.get(position);
 
-        final DiaryAdapter.ViewHolder h=holder;
-        holder.username.setText(diary.getDisplayname());
+        final DiaryAdapter.ViewHolder h = holder;
+
+        holder.username.setText(diary.getUsername());
         holder.title.setText(diary.getTitle());
         holder.mainText.setText(diary.getMainText());
         holder.timestamp.setText(diary.getTimestamp());
-        holder.msgImg.setOnClickListener(new View.OnClickListener() {
+        holder.diaryImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 {
 
-                    Intent intent = new Intent(context, WriteActivity.class); // 이동하려는 액티비티
+                    Intent intent = new Intent(context, WriteActivity.class);
 
+                    intent.putExtra("diary", diary); // diary 객체 전달
                     intent.putExtra("UserList",UserList);
-                    intent.putExtra("postId",diary.getpostId());
-                    intent.putExtra("WriterId",diary.getId());
-                    intent.putExtra("title",diary.getTitle());
-                    intent.putExtra("mainText",diary.getMainText());
-                    intent.putExtra("time",diary.getTimestamp());
-                    intent.putExtra("gallery",diary.getImageURL());
-                    // 간단히 할 수 있는 방법 없을까 고민
 
                     context.startActivity(intent);
 
                 }
-            }//리스트 누르면 팝업창 생성
+            }
         });
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        StorageReference storageReference = storage.getReference("imageURL/" + diary.getId());
+        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+
+                Glide.with(context).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(h.profile);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                Glide.with(context).load(R.drawable.ic_launcher_foreground).apply(RequestOptions.circleCropTransform()).into(h.profile);
+
+            }
+        });
+
+
         if(diary.getImageURL().equals("default")){
-            holder.msgImg.setBackgroundResource(R.drawable.ic_launcher_foreground);
+                holder.diaryImg.setBackgroundResource(R.drawable.ic_launcher_foreground);
         }else{
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageReference = storage.getReference("Diarys/"+ UserList +"/"+ diary.getpostId());
+
+            storageReference = storage.getReference("Diarys/"+ UserList +"/"+ diary.getpostId());
             storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
+
                     Glide.with(context).load(uri.toString()).into(new SimpleTarget<Drawable>() {
                         @Override
                         public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                h.msgImg.setBackground(resource);
+                                h.diaryImg.setBackground(resource);
+
                             }
                         }
                     });

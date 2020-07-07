@@ -26,12 +26,10 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
     private Context context;
     private List<Users> Users;
-    //private boolean status;
 
     public UserAdapter(Context context, List<Users> Users){
         this.context = context;
         this.Users = Users;
-        //this.status = status;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
@@ -44,8 +42,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             userbt=itemView.findViewById(R.id.user);
             username = itemView.findViewById(R.id.userListName);
             profile = itemView.findViewById(R.id.userListImage);
-            //status_on = itemView.findViewById(R.id.status_on);
-            //status_off = itemView.findViewById(R.id.status_off);
 
         }
     }
