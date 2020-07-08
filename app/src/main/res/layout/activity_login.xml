@@ -49,13 +49,5 @@
         android:layout_marginRight="50dp"
         android:text="LOGIN"
         />
-    <Button
-        android:id="@+id/test"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity ="center"
-        android:textSize="20dp"
-        android:text="테스트 계정 로그인"
-        />
+
 </LinearLayout>

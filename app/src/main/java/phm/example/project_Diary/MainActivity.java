@@ -15,23 +15,33 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        btn=(Button)findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),LoginActivity.class); // 이동하려는 액티비티
-                startActivity(intent);
-            }
-        });
+        Intent intent;
 
-        btn2=(Button)findViewById(R.id.button2);
-        btn2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(getApplicationContext(),SignupActivity.class); // 회원가입
-                startActivity(intent);
-            }
-        });
+        if(SaveSharedPreference.getUser(MainActivity.this).length() == 0) {
+            btn=(Button)findViewById(R.id.button);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(getApplicationContext(),LoginActivity.class); // 이동하려는 액티비티
+                    startActivity(intent);
+                    finish();
+                }
+            });
 
+            btn2=(Button)findViewById(R.id.button2);
+            btn2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(getApplicationContext(),SignupActivity.class); // 회원가입
+                    startActivity(intent);
+                }
+            });
+
+        } else {
+            // Call Next Activity
+            intent = new Intent(MainActivity.this, StartActivity.class);
+            startActivity(intent);
+            this.finish();
+        }
     }
 }
