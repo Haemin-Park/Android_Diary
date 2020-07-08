@@ -48,7 +48,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
         public LinearLayout diaryImg;
         public TextView title;
         public TextView timestamp;
-        public TextView mainText;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -58,10 +57,9 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
             diaryImg = itemView.findViewById(R.id.backImgset);
             title = itemView.findViewById(R.id.title);
             timestamp = itemView.findViewById(R.id.date);
-            mainText = itemView.findViewById(R.id.maintext);
+
         }
     }
-
 
     @NonNull
     @Override
@@ -80,7 +78,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
 
         holder.username.setText(diary.getUsername());
         holder.title.setText(diary.getTitle());
-        holder.mainText.setText(diary.getMainText());
         holder.timestamp.setText(diary.getTimestamp());
         holder.diaryImg.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +112,6 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
 
             }
         });
-
 
         if(diary.getImageURL().equals("default")){
                 holder.diaryImg.setBackgroundResource(R.drawable.ic_launcher_foreground);

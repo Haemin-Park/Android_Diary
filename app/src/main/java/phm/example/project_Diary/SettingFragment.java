@@ -108,7 +108,10 @@ public class SettingFragment extends Fragment {
         }
 
         Button saveBtn =view.findViewById(R.id.save);
+        Button logoutBtn =view.findViewById(R.id.logout);
         saveBtn.setOnClickListener(saveBtnClickListener);
+        logoutBtn.setOnClickListener(logoutBtnClickListener);
+
 
         return view;
 
@@ -120,8 +123,6 @@ public class SettingFragment extends Fragment {
             startActivityForResult(intent, PICK_FROM_ALBUM);
         }
     };
-
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -149,8 +150,6 @@ public class SettingFragment extends Fragment {
             UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(username1).build();
             Fuser.updateProfile(profileUpdates);
 
-            Log.d("와우와우",Fuser.getDisplayName());
-
             if (userPhotoUri!=null) {
                 map.put("imageURL", uid);
                 reference.updateChildren(map);
@@ -177,8 +176,16 @@ public class SettingFragment extends Fragment {
             }
         }
     };
+    Button.OnClickListener logoutBtnClickListener = new View.OnClickListener() {
+        public void onClick(final View view) {
+            SaveSharedPreference.clearUser(getContext()); // 자동로그인 해제
+            Intent intent=new Intent(getContext(),MainActivity.class);
+            startActivity(intent); // 첫 화면으로 이동
+            getActivity().finish();
+        }
+    };
 
-        private boolean validateForm () {
+            private boolean validateForm () {
             boolean valid = true;
 
             return valid;

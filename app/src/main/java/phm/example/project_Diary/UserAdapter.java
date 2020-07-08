@@ -68,7 +68,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                     intent.putExtra("user", user.getId());
                     intent.putExtra("username", user.getDisplayname());
                     view.getContext().startActivity(intent);}
-            }//리스트 누르면 팝업창 생성
+            } //리스트 누르면 팝업창 생성
         });
         if(user.getImageURL().equals("default")){
             holder.profile.setImageResource(R.drawable.ic_launcher_foreground);
