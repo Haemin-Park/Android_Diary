@@ -46,6 +46,8 @@ import java.util.Map;
 public class WriteActivity extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
+    FirebaseStorage storage;
+    StorageReference storageReference;
     DatabaseReference reference;
     FirebaseUser Fuser;
     String Wtitle="";
@@ -58,7 +60,7 @@ public class WriteActivity extends AppCompatActivity {
 
     ImageView gallery;
     TextView title, mainText, time;
-    Button saveBtn;
+    Button saveBtn, removeBtn;
     Diary diary;
     String UserList, StrTitle , StrMainText , StrTime , StrGallery , WriterId;
 
@@ -71,21 +73,25 @@ public class WriteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_write);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        Fuser = FirebaseAuth.getInstance().getCurrentUser();
+        storage = FirebaseStorage.getInstance();
 
         gallery = (ImageView) findViewById(R.id.gallery);
         title = (TextView)findViewById(R.id.title);
         mainText = (TextView)findViewById(R.id.mainText);
         time = (TextView)findViewById(R.id.time);
 
+        saveBtn =(Button)findViewById(R.id.textSave);
+        removeBtn =(Button)findViewById(R.id.textRemove);
+
+        firstSet(); // 초기 세팅
+
+        saveBtn.setOnClickListener(saveBtnClickListener);
+        removeBtn.setOnClickListener(removeBtnClickListener);
+
         gallery.setOnClickListener(userPhotoIVClickListener);
         gallery.setBackground(new ShapeDrawable(new OvalShape()));
 
-        Fuser = FirebaseAuth.getInstance().getCurrentUser();
-
-        saveBtn =(Button)findViewById(R.id.textSave);
-        saveBtn.setOnClickListener(saveBtnClickListener);
-
-        firstSet(); // 초기 세팅
 
 
     }
@@ -114,7 +120,7 @@ public class WriteActivity extends AppCompatActivity {
 
             long now = System.currentTimeMillis(); // 현재시간 msec로 구함
             Date date = new Date(now); // 현재시간 date 변수에 저장
-            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss"); // 시간을 나타내는 포맷 지정
+            SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy.MM.dd HH:mm"); // 시간을 나타내는 포맷 지정
             WformatDate = sdfNow.format(date); // 변수에 값 저장
 
             Wtitle = title.getText().toString();
@@ -132,13 +138,43 @@ public class WriteActivity extends AppCompatActivity {
 
     };
 
+    Button.OnClickListener removeBtnClickListener= new View.OnClickListener() {
+        @Override
+        public void onClick(View v) { // 스토리지의 사진 삭제, 데이터베이스 데이터 삭제 필요
+
+            FirebaseDatabase.getInstance().getReference("Diarys").child(UserList).child(postId).removeValue()
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+
+                            if(!StrGallery.equals("default")) {
+
+                                storage.getReference("Diarys/" + UserList + "/" + postId).delete()
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                            @Override
+                                            public void onSuccess(Void aVoid) {
+                                                Toast.makeText(WriteActivity.this, "삭제 완료", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                            }
+                            else{
+                                Toast.makeText(WriteActivity.this, "삭제 완료", Toast.LENGTH_LONG).show();
+                            }
+
+                            finish();
+
+                        }
+                    });
+        }
+    };
+
     public void firstSet(){
 
         intent = getIntent();
 
         UserList = intent.getStringExtra("UserList");
 
-        diary = (Diary)intent.getSerializableExtra("diary");
+        diary = (Diary)intent.getSerializableExtra("diary"); // 일기 객체 받아옴
 
         if(diary != null) {
 
@@ -152,10 +188,14 @@ public class WriteActivity extends AppCompatActivity {
             if(WriterId.equals(Fuser.getUid()))
                 modify = true; // 수정이 가능한 상태
 
-            if(modify) // 본인이 작성한 일기라면 저장버튼 보임
+            if(modify) { // 본인이 작성한 일기라면 버튼 보임
                 saveBtn.setVisibility(View.VISIBLE);
-            else // 친구의 글이라면 저장버튼 보이지 않음
+                removeBtn.setVisibility(View.VISIBLE);
+            }
+            else { // 친구의 글이라면 버튼 보이지 않음
                 saveBtn.setVisibility(View.INVISIBLE);
+                removeBtn.setVisibility(View.INVISIBLE);
+            }
 
             title.setText(StrTitle);
             mainText.setText(StrMainText);
@@ -165,8 +205,7 @@ public class WriteActivity extends AppCompatActivity {
                 gallery.setImageResource(R.drawable.ic_launcher_foreground);
                 photo = false;
             } else {
-                FirebaseStorage storage = FirebaseStorage.getInstance();
-                StorageReference storageReference = storage.getReference("Diarys/" + UserList + "/" + postId);
+                storageReference = storage.getReference("Diarys/" + UserList + "/" + postId);
                 storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
@@ -240,7 +279,7 @@ public class WriteActivity extends AppCompatActivity {
 
     public void modify(){
 
-        final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String uid = Fuser.getUid();
 
         reference = FirebaseDatabase.getInstance().getReference("Diarys").child(UserList).child(postId);
 

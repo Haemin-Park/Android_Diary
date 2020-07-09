@@ -40,7 +40,7 @@ public class DiarysStart extends Activity {
         friendID = intent.getStringExtra("user"); // 채팅 상대
         friendName = intent.getStringExtra("username"); //채팅 상대
 
-        name.setText(friendName+"님과 채팅을 시작하겠습니까?");
+        name.setText(friendName+"님과 함께하는 일기장을 만드시겠습니까?");
 
         String[] arr={friendID, Fuser.getUid()};
         Arrays.sort(arr);
@@ -52,17 +52,17 @@ public class DiarysStart extends Activity {
         startbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!databaseReference.child("DiaryRoom").child(friendID).child(Diarysname).child("diarysUserList").getKey().equals(Diarysname)) {
-                    createDiarys(friendID);
-                    createDiarys(Fuser.getUid());
 
-                    DiarysUsers(Fuser.getUid(),friendID);
-                }
+                createDiarys(friendID);
+                createDiarys(Fuser.getUid());
+
+                DiarysUsers(Fuser.getUid(),friendID);
 
                 Intent intent = new Intent(DiarysStart.this, DiarysActivity.class);
                 intent.putExtra("UserList", UserList);
                 startActivity(intent);
                 finish();
+
             }
         }); //ok버튼을 누르면 데이터베이스에 채팅방 생성
     }
