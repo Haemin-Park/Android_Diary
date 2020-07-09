@@ -1,6 +1,7 @@
 package phm.example.project_Diary;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,11 +34,14 @@ public class FriendFragment extends Fragment {
     private List<Users> allFriends;
     String str;
     DatabaseReference rf, frf;
+    FirebaseUser Fuser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.friend_fragment, container, false);
+
+        Fuser=FirebaseAuth.getInstance().getCurrentUser();
 
         search = view.findViewById(R.id.search);
         searchBtn =  view.findViewById(R.id.searchBtn);
@@ -49,20 +53,32 @@ public class FriendFragment extends Fragment {
                 str = search.getText().toString();
                 final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                rf = FirebaseDatabase.getInstance().getReference("Users").child(str);
+                rf = FirebaseDatabase.getInstance().getReference("Users");
 
-                if(rf.getKey().equals(str)){
+                rf.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    HashMap<String, Object> map = new HashMap<>();
-                    frf = FirebaseDatabase.getInstance().getReference("FriendsList").child(firebaseUser.getUid()).child(str);
-                    map.put("fid", str); // 내 친구목록에 추가
-                    frf.setValue(map);
+                        if(!Fuser.getUid().equals(str) && dataSnapshot.hasChild(str)){
+                        // 추가하려는 친구가 나의 uid가 아니고, 유저 리스트에 존재하는 uid 일 때
+                            HashMap<String, Object> map = new HashMap<>();
+                            frf = FirebaseDatabase.getInstance().getReference("FriendsList").child(firebaseUser.getUid()).child(str);
+                            map.put("fid", str); // 내 친구목록에 추가
+                            frf.setValue(map);
 
-                    HashMap<String, Object> map2 = new HashMap<>();
-                    frf = FirebaseDatabase.getInstance().getReference("FriendsList").child(str).child(firebaseUser.getUid());
-                    map2.put("fid", firebaseUser.getUid()); // 친구의 친구목록에 나 추가
-                    frf.setValue(map2);
-                }
+                            HashMap<String, Object> map2 = new HashMap<>();
+                            frf = FirebaseDatabase.getInstance().getReference("FriendsList").child(str).child(firebaseUser.getUid());
+                            map2.put("fid", firebaseUser.getUid()); // 친구의 친구목록에 나 추가
+                            frf.setValue(map2);
+                        }
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
             }
         });
@@ -72,12 +88,12 @@ public class FriendFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         allFriends = new ArrayList<>();
-        readUsers();
+        readFriends();
 
         return view;
     }
 
-    private void readUsers(){
+    private void readFriends(){
         final FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         final DatabaseReference urf = FirebaseDatabase.getInstance().getReference("Users");
         final DatabaseReference frf = FirebaseDatabase.getInstance().getReference("FriendsList").child(firebaseUser.getUid());
