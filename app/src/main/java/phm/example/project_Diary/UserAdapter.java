@@ -104,6 +104,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                                 intent.putExtra("UserList", UserList);
                                 v.getContext().startActivity(intent);
                             }
+
                             else{ // 일기장이 존재하지 않는 경우 일기장을 만듦
 
                                 intent = new Intent(v.getContext(), DiarysStart.class);
@@ -111,6 +112,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
                                 intent.putExtra("username", user.getDisplayname());
                                 v.getContext().startActivity(intent);
                             }
+
                         }
                         else{ // 일기장이 존재하지 않는 경우 일기장을 만듦
 
