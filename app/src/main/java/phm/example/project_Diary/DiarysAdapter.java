@@ -18,7 +18,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
@@ -97,9 +96,10 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
 
-                        UserList=diaryroom.getDiarysUserList();
+                        UserList = diaryroom.getDiarysUserList();
 
-                        FirebaseDatabase.getInstance().getReference("Diarys").child(UserList).addValueEventListener(new ValueEventListener() {
+                        FirebaseDatabase.getInstance().getReference("Diarys").child(UserList).addListenerForSingleValueEvent(new ValueEventListener() {
+                          
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -107,6 +107,7 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
 
                                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                                     Diary diary = snapshot.getValue(Diary.class);
+
                                     storage.getReference("Diarys/" + UserList + "/" + diary.getpostId()).delete();
 
                                 }
