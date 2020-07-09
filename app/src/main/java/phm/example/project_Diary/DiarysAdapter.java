@@ -27,7 +27,6 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
     private List<DiaryRoom> diaryRooms;
     String UserList;
     String mname, fname;
-    Boolean remove=false;
 
     public DiarysAdapter(Context context, List<DiaryRoom> diaryRooms){
         this.context = context;
@@ -97,11 +96,9 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
 
-                        remove=true;
-
                         UserList = diaryroom.getDiarysUserList();
 
-                        FirebaseDatabase.getInstance().getReference("Diarys").child(UserList).addValueEventListener(new ValueEventListener() {
+                        FirebaseDatabase.getInstance().getReference("Diarys").child(UserList).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
@@ -110,8 +107,7 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
                                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                                     Diary diary = snapshot.getValue(Diary.class);
 
-                                    if(remove)
-                                        storage.getReference("Diarys/" + UserList + "/" + diary.getpostId()).delete();
+                                    storage.getReference("Diarys/" + UserList + "/" + diary.getpostId()).delete();
 
                                 }
                             }
