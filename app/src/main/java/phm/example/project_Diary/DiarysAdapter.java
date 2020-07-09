@@ -18,7 +18,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.List;
@@ -28,6 +27,7 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
     private List<DiaryRoom> diaryRooms;
     String UserList;
     String mname, fname;
+    Boolean remove=false;
 
     public DiarysAdapter(Context context, List<DiaryRoom> diaryRooms){
         this.context = context;
@@ -97,7 +97,9 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
                     @Override
                     public void onClick(final DialogInterface dialog, int which) {
 
-                        UserList=diaryroom.getDiarysUserList();
+                        remove=true;
+
+                        UserList = diaryroom.getDiarysUserList();
 
                         FirebaseDatabase.getInstance().getReference("Diarys").child(UserList).addValueEventListener(new ValueEventListener() {
                             @Override
@@ -107,7 +109,9 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
 
                                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                                     Diary diary = snapshot.getValue(Diary.class);
-                                    storage.getReference("Diarys/" + UserList + "/" + diary.getpostId()).delete();
+
+                                    if(remove)
+                                        storage.getReference("Diarys/" + UserList + "/" + diary.getpostId()).delete();
 
                                 }
                             }
