@@ -2,15 +2,15 @@ package phm.example.project_Diary;
 
 public class DiaryRoom {
     private String diarysUserList;
-    private String myName;
-    private String friendName;
+    private String mid;
+    private String fid;
 
 
-    public DiaryRoom(String diarysUserList, String myName, String friendName) {
+    public DiaryRoom(String diarysUserList, String mid, String fid) {
 
         this.diarysUserList =diarysUserList;
-        this.myName = myName;
-        this.friendName = friendName;
+        this.mid = mid;
+        this.fid = fid;
     }
 
     public DiaryRoom(){
@@ -24,15 +24,13 @@ public class DiaryRoom {
         this.diarysUserList = diarysUserList;
     }
 
-    public String getMyName() {
-        return myName;
+    public String getMid() { return mid; }
+
+    public void setMyName(String mid) {
+        this.mid = mid;
     }
 
-    public void setMyName(String myName) {
-        this.myName = myName;
-    }
+    public String getFid() { return fid ; }
 
-    public String getFriendName () { return friendName ; }
-
-    public void setFriendName (String friendName ) { this.friendName  = friendName ;  }
+    public void setFriendID (String fid ) { this.fid  = fid ;  }
 }
