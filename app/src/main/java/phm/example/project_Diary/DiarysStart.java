@@ -17,7 +17,7 @@ import java.util.Arrays;
 
 public class DiarysStart extends Activity {
 
-    String Diarysname,UserList, friendID, myName, friendName;
+    String Diarysname,UserList, mid, fid, friendName;
 
     TextView name;
 
@@ -37,12 +37,12 @@ public class DiarysStart extends Activity {
         startbtn = (Button) findViewById(R.id.startbtn);
         Intent intent = getIntent();
 
-        friendID = intent.getStringExtra("user"); // 채팅 상대
+        fid = intent.getStringExtra("user"); // 채팅 상대
         friendName = intent.getStringExtra("username"); //채팅 상대
 
         name.setText(friendName+"님과 함께하는 일기장을 만드시겠습니까?");
 
-        String[] arr={friendID, Fuser.getUid()};
+        String[] arr={fid, Fuser.getUid()};
         Arrays.sort(arr);
 
         UserList = arr[0]+"@"+arr[1]; // 소팅 후 유저리스트 생성(같은 방이 두개 생기지 않게 하기 위함)
@@ -53,10 +53,8 @@ public class DiarysStart extends Activity {
             @Override
             public void onClick(View v) {
 
-                createDiarys(friendID);
+                createDiarys(fid);
                 createDiarys(Fuser.getUid());
-
-                DiarysUsers(Fuser.getUid(),friendID);
 
                 Intent intent = new Intent(DiarysStart.this, DiarysActivity.class);
                 intent.putExtra("UserList", UserList);
@@ -72,21 +70,16 @@ public class DiarysStart extends Activity {
         databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("diarysUserList").setValue(UserList);
 
         Dreference = FirebaseDatabase.getInstance().getReference("Users").child(Fuser.getUid());
-        myName = Fuser.getDisplayName();
+        mid = Fuser.getUid();
 
-        if(id == Fuser.getUid()){
-        databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("myName").setValue(myName);
-        databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("friendName").setValue(friendName);
+        if(id == mid){
+        databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("mid").setValue(mid);
+        databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("fid").setValue(fid);
 
        } else{
-            databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("myName").setValue(friendName);
-            databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("friendName").setValue(myName);
+            databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("mid").setValue(fid);
+            databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("fid").setValue(mid);
         }
-    }
-
-    public void DiarysUsers(String mid, String fid){
-        databaseReference.child("DiarysUserList").child(Diarysname).child(mid).setValue("true");
-        databaseReference.child("DiarysUserList").child(Diarysname).child(fid).setValue("true");
     }
 
 }
