@@ -9,7 +9,8 @@
     <ImageView
         android:id="@+id/userListImage"
         android:layout_width="50dp"
-        android:layout_height="50dp"/>
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"/>
 
     <TextView
         android:id="@+id/userListName"
@@ -17,8 +18,9 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/userListImage"
         android:layout_centerVertical="true"
-        android:textSize="15sp"
-        android:layout_marginLeft="10dp"
-        android:text="작성자"/>
+        android:textSize="20sp"
+        android:layout_marginLeft="15dp"
+        android:text="친구"
+        android:fontFamily="@font/nanumsquare_acl"/>
 
 </RelativeLayout>

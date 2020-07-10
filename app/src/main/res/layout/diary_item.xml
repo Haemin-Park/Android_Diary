@@ -12,63 +12,79 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="195dp"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
             android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/profileImg"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:layout_weight="2" />
+                android:layout_marginLeft="10dp"/>
 
             <TextView
                 android:id="@+id/username"
+                android:layout_centerVertical="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:text="작성자" />
-        </LinearLayout>
+                android:fontFamily="@font/nanumsquare_acl"
+                android:layout_toRightOf="@+id/profileImg"
+                android:layout_marginLeft="15dp"
+                android:text="작성자"
+                android:textSize="20dp" />
+        </RelativeLayout>
 
-        <LinearLayout
-            android:id="@+id/backImgset"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#bfbfbf"
-            android:backgroundTintMode="multiply"
+            android:layout_height="140dp"
             android:orientation="vertical"
             android:padding="15dp"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:weightSum="20">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="제목"
-                android:textColor="#FFFFFF"
-                android:textSize="25dp" />
+            <ImageView
+                android:id="@+id/backImgset"
+                android:scaleType="centerCrop"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:tint="#595959"
+                android:tintMode="multiply"/>
 
-            <TextView
-                android:id="@+id/date"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="2020-06-20"
-                android:textSize="10dp" />
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2"
+                    android:fontFamily="@font/nanumsquare_acl"
+                    android:gravity="center"
+                    android:text="제목"
+                    android:textColor="#FFFFFF"
+                    android:textSize="25dp" />
+                <TextView
+                    android:id="@+id/date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/nanumsquare_acl"
+                    android:gravity="center"
+                    android:text="2020-07-10"
+                    android:textColor="#FFFFFF"
+                    android:textSize="15dp" />
+            </LinearLayout>
 
-        </LinearLayout>
+        </FrameLayout>
 
     </LinearLayout>
 

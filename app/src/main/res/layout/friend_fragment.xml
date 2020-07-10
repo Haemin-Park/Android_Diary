@@ -1,37 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/search"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="35dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:lines="3"
-        android:text="boOqR0q5H9MAfliheYEU8SpoMx13" />
+        android:layout_marginTop="30dp"
+        android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/searchBtn"
-        android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/search"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="15"
+            android:fontFamily="@font/nanumsquare_acl"
+            android:inputType="textPersonName"
+            android:hint="추가할 친구 UID를 입력해주세요."
+            android:layout_marginLeft="10dp"/>
+
+        <ImageButton
+            android:id="@+id/searchBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nanumsquare_acl"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/search"
+            android:background="@android:color/transparent"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="565dp"
-        android:layout_marginEnd="105dp"
-        android:text="Button" />
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/nanumsquare_acl"
+        android:textSize="20sp"
+        android:text="친구"
+        android:layout_marginLeft="10dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview"
-        android:layout_width="369dp"
-        android:layout_height="494dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="-3dp"
-        android:layout_marginTop="7dp" />
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" />
 
-</RelativeLayout>
+</LinearLayout>

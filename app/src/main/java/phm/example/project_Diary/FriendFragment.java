@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -29,7 +31,7 @@ public class FriendFragment extends Fragment {
 
     private RecyclerView recyclerView;
     private EditText search;
-    private Button searchBtn;
+    private ImageButton searchBtn;
     private UserAdapter userAdapter;
     private List<Users> allFriends;
     String str;
@@ -70,6 +72,13 @@ public class FriendFragment extends Fragment {
                             frf = FirebaseDatabase.getInstance().getReference("FriendsList").child(str).child(firebaseUser.getUid());
                             map2.put("fid", firebaseUser.getUid()); // 친구의 친구목록에 나 추가
                             frf.setValue(map2);
+
+                            Toast.makeText(getContext(),"친구추가 완료!",Toast.LENGTH_LONG).show();
+                            search.setText(null);
+                        }
+                        else{
+                            Toast.makeText(getContext(),"이미 추가된 친구 UID 또는 존재 하지 않는 UID 입니다.",Toast.LENGTH_LONG).show();
+                            search.setText(null);
                         }
 
                     }

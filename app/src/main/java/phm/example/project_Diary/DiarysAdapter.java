@@ -4,21 +4,28 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -34,14 +41,19 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        public RelativeLayout userbt;
-        public TextView chatName;
+
+        public CardView room;
+        public ImageView mprofile, fprofile;
+        public TextView diaryusers;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            userbt=itemView.findViewById(R.id.chat);
-            chatName = itemView.findViewById(R.id.chatListName);
 
+            room = itemView.findViewById(R.id.diaryroom);
+            mprofile = itemView.findViewById(R.id.mprofile);
+            fprofile = itemView.findViewById(R.id.fprofile);
+            diaryusers = itemView.findViewById(R.id.diaryusers);
         }
     }
 
@@ -66,15 +78,54 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
                 for(DataSnapshot snapshot : dataSnapshot.getChildren()){
                     Users user = snapshot.getValue(Users.class);
 
-                    if(diaryroom.getMid().equals(user.getId()))
+                    if(diaryroom.getMid().equals(user.getId())) {
                         mname = user.getDisplayname();
 
-                    if(diaryroom.getFid().equals(user.getId()))
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+                        StorageReference storageReference = storage.getReference("imageURL/" + user.getId());
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+
+                                Glide.with(context).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(h.mprofile);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle any errors
+                                Glide.with(context).load(R.drawable.ic_launcher_foreground).apply(RequestOptions.circleCropTransform()).into(h.mprofile);
+
+                            }
+                        });
+
+                    }
+
+                    if(diaryroom.getFid().equals(user.getId())) {
                         fname = user.getDisplayname();
+
+                        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+                        StorageReference storageReference = storage.getReference("imageURL/" + user.getId());
+                        storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+
+                                Glide.with(context).load(uri.toString()).apply(RequestOptions.circleCropTransform()).into(h.fprofile);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                                // Handle any errors
+                                Glide.with(context).load(R.drawable.ic_launcher_foreground).apply(RequestOptions.circleCropTransform()).into(h.fprofile);
+
+                            }
+                        });
+                    }
 
                 }
 
-                h.chatName.setText(mname+", "+fname); // 일기장 참여자 목록
+                h.diaryusers.setText(mname+", "+fname); // 일기장 참여자 목록
 
             }
 
@@ -84,7 +135,7 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
             }
         });
 
-        holder.userbt.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.room.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
 
@@ -140,7 +191,7 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
             }
         });
 
-        holder.userbt.setOnClickListener(new View.OnClickListener() {
+        holder.room.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 {
