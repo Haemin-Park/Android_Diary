@@ -22,7 +22,8 @@
         android:layout_gravity ="center"
         android:layout_marginTop="10dp"
         android:textSize="30dp"
-        android:text="사용자" />
+        android:text="사용자"
+        android:fontFamily="@font/nanumsquare_acl"/>
 
     <Button
         android:id="@+id/save"
@@ -30,7 +31,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity ="center"
         android:layout_marginTop="40dp"
-        android:text="save" />
+        android:text="save"
+        android:fontFamily="@font/nanumsquare_acl"/>
 
     <Button
         android:id="@+id/logout"
@@ -38,6 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity ="center"
         android:layout_marginTop="40dp"
-        android:text="logout" />
+        android:text="logout"
+        android:fontFamily="@font/nanumsquare_acl"/>
 
 </LinearLayout>

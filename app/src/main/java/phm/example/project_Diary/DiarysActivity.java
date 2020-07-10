@@ -3,7 +3,7 @@ package phm.example.project_Diary;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +23,7 @@ import java.util.List;
 
 public class DiarysActivity extends AppCompatActivity {
 
-    Button writeBtn;
+    ImageButton writeBtn;
     private RecyclerView recyclerv;
     private DiaryAdapter diaryAdapter;
     private List<Diary> allDiarys;
@@ -46,7 +46,7 @@ public class DiarysActivity extends AppCompatActivity {
 
         readDiarys();
 
-        writeBtn=(Button)findViewById(R.id.write);
+        writeBtn=(ImageButton) findViewById(R.id.write);
 
         writeBtn.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -45,7 +45,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
 
         public ImageView profile;
         public TextView username;
-        public LinearLayout diaryImg;
+        public ImageView diaryImg;
         public TextView title;
         public TextView timestamp;
 
@@ -122,15 +122,7 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
                 @Override
                 public void onSuccess(Uri uri) {
 
-                    Glide.with(context).load(uri.toString()).into(new SimpleTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(Drawable resource, Transition<? super Drawable> transition) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                h.diaryImg.setBackground(resource);
-
-                            }
-                        }
-                    });
+                    Glide.with(context).load(uri.toString()).into(h.diaryImg);
 
             }}).addOnFailureListener(new OnFailureListener() {
                 @Override
