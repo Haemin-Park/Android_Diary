@@ -150,6 +150,7 @@ public class DiarysAdapter extends RecyclerView.Adapter<DiarysAdapter.ViewHolder
                         UserList = diaryroom.getDiarysUserList();
 
                         FirebaseDatabase.getInstance().getReference("Diarys").child(UserList).addListenerForSingleValueEvent(new ValueEventListener() {
+                          
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
