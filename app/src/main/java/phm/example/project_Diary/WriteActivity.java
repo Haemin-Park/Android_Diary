@@ -84,14 +84,13 @@ public class WriteActivity extends AppCompatActivity {
         saveBtn =(Button)findViewById(R.id.textSave);
         removeBtn =(Button)findViewById(R.id.textRemove);
 
+        gallery.setBackground(new ShapeDrawable(new OvalShape()));
+        gallery.setClipToOutline(true);
+
         firstSet(); // 초기 세팅
 
         saveBtn.setOnClickListener(saveBtnClickListener);
         removeBtn.setOnClickListener(removeBtnClickListener);
-
-        gallery.setOnClickListener(userPhotoIVClickListener);
-        gallery.setBackground(new ShapeDrawable(new OvalShape()));
-
 
 
     }
@@ -202,7 +201,7 @@ public class WriteActivity extends AppCompatActivity {
             time.setText(StrTime);
 
             if (StrGallery.equals("default")) {
-                gallery.setImageResource(R.drawable.ic_launcher_foreground);
+                gallery.setImageResource(R.drawable.noimg);
                 photo = false;
             } else {
                 storageReference = storage.getReference("Diarys/" + UserList + "/" + postId);
@@ -222,6 +221,9 @@ public class WriteActivity extends AppCompatActivity {
 
 
         }
+
+        if(diary == null || modify)
+            gallery.setOnClickListener(userPhotoIVClickListener);
 
     }
 

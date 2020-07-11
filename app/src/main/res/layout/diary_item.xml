@@ -18,6 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -53,7 +54,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:tint="#595959"
-                android:tintMode="multiply"/>
+                android:tintMode="multiply"
+                android:src="@drawable/noimg"/>
 
             <LinearLayout
                 android:layout_width="fill_parent"

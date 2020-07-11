@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -31,6 +32,7 @@ public class DiarysStart extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.diarys_start);
         name=(TextView)findViewById(R.id.name);
 
@@ -72,7 +74,7 @@ public class DiarysStart extends Activity {
         Dreference = FirebaseDatabase.getInstance().getReference("Users").child(Fuser.getUid());
         mid = Fuser.getUid();
 
-        if(id == mid){
+        if(id.equals(mid)){
         databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("mid").setValue(mid);
         databaseReference.child("DiaryRoom").child(id).child(Diarysname).child("fid").setValue(fid);
 

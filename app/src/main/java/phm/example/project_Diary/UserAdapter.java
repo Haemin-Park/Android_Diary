@@ -133,7 +133,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
             }
         });
         if(user.getImageURL().equals("default")){
-            holder.profile.setImageResource(R.drawable.ic_launcher_foreground);
+            holder.profile.setImageResource(R.drawable.noimg);
         }else{
             FirebaseStorage storage = FirebaseStorage.getInstance();
             StorageReference storageReference = storage.getReference("imageURL/"+user.getImageURL());

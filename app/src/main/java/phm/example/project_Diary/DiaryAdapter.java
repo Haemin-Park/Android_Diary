@@ -108,13 +108,13 @@ public class DiaryAdapter extends RecyclerView.Adapter<DiaryAdapter.ViewHolder> 
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
-                Glide.with(context).load(R.drawable.ic_launcher_foreground).apply(RequestOptions.circleCropTransform()).into(h.profile);
+                Glide.with(context).load(R.drawable.noimg).apply(RequestOptions.circleCropTransform()).into(h.profile);
 
             }
         });
 
         if(diary.getImageURL().equals("default")){
-                holder.diaryImg.setBackgroundResource(R.drawable.ic_launcher_foreground);
+                holder.diaryImg.setBackgroundResource(R.drawable.noimg);
         }else{
 
             storageReference = storage.getReference("Diarys/"+ UserList +"/"+ diary.getpostId());

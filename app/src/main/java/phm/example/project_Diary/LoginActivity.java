@@ -20,11 +20,13 @@ public class LoginActivity extends AppCompatActivity {
 
     EditText email;
     EditText password;
-    Button login;
+    Button login, signup;
     FirebaseAuth firebaseAuth;
 
     String email_txt;
     String pwd_txt;
+
+    Intent intent;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         email=(EditText)findViewById(R.id.email);
         password=(EditText)findViewById(R.id.password);
         login=(Button)findViewById(R.id.login);
+        signup=(Button)findViewById(R.id.su);
 
         firebaseAuth=firebaseAuth.getInstance();
         login.setOnClickListener(new View.OnClickListener() {
@@ -41,19 +44,30 @@ public class LoginActivity extends AppCompatActivity {
                 email_txt=email.getText().toString().trim();
                 pwd_txt=password.getText().toString().trim();
 
-                firebaseAuth.signInWithEmailAndPassword(email_txt,pwd_txt)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if(task.isSuccessful()){
-                                    SaveSharedPreference.setUser(LoginActivity.this, email_txt); // 자동로그인
-                                    Intent intent=new Intent(LoginActivity.this,StartActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                }else
-                                    Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                if(email_txt.getBytes().length>0 && pwd_txt.getBytes().length>0) {
+                    firebaseAuth.signInWithEmailAndPassword(email_txt, pwd_txt)
+                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        SaveSharedPreference.setUser(LoginActivity.this, email_txt); // 자동로그인
+                                        intent = new Intent(LoginActivity.this, StartActivity.class);
+                                        startActivity(intent);
+                                        finish();
+                                    } else
+                                        Toast.makeText(LoginActivity.this, "로그인 실패", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                }
+            }
+        });
+
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                intent=new Intent(LoginActivity.this, SignupActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
 

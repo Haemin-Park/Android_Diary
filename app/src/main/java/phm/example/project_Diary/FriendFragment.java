@@ -61,7 +61,7 @@ public class FriendFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        if(!Fuser.getUid().equals(str) && dataSnapshot.hasChild(str)){
+                        if(str.trim().getBytes().length >0 && !Fuser.getUid().equals(str) && dataSnapshot.hasChild(str)){
                         // 추가하려는 친구가 나의 uid가 아니고, 유저 리스트에 존재하는 uid 일 때
                             HashMap<String, Object> map = new HashMap<>();
                             frf = FirebaseDatabase.getInstance().getReference("FriendsList").child(firebaseUser.getUid()).child(str);
@@ -73,11 +73,11 @@ public class FriendFragment extends Fragment {
                             map2.put("fid", firebaseUser.getUid()); // 친구의 친구목록에 나 추가
                             frf.setValue(map2);
 
-                            Toast.makeText(getContext(),"친구추가 완료!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"친구추가 완료",Toast.LENGTH_LONG).show();
                             search.setText(null);
                         }
                         else{
-                            Toast.makeText(getContext(),"이미 추가된 친구 UID 또는 존재 하지 않는 UID 입니다.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"존재 하지 않는 UID 입니다.",Toast.LENGTH_LONG).show();
                             search.setText(null);
                         }
 
