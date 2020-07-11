@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btn, btn2;
+    Button login, signup;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,8 +18,8 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
 
         if(SaveSharedPreference.getUser(MainActivity.this).length() == 0) {
-            btn=(Button)findViewById(R.id.button);
-            btn.setOnClickListener(new View.OnClickListener() {
+            login=(Button)findViewById(R.id.main_login);
+            login.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(getApplicationContext(),LoginActivity.class); // 이동하려는 액티비티
@@ -28,12 +28,13 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
-            btn2=(Button)findViewById(R.id.button2);
-            btn2.setOnClickListener(new View.OnClickListener() {
+            signup=(Button)findViewById(R.id.main_signup);
+            signup.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent=new Intent(getApplicationContext(),SignupActivity.class); // 회원가입
                     startActivity(intent);
+                    finish();
                 }
             });
 

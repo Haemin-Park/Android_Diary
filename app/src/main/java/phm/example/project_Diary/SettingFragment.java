@@ -1,5 +1,7 @@
 package phm.example.project_Diary;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.ShapeDrawable;
@@ -15,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,15 +45,17 @@ import com.google.firebase.storage.StorageReference;
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
 public class SettingFragment extends Fragment {
 
     ImageView profile_image;
     EditText username;
+    TextView uid;
 
-    DatabaseReference Dreference;
     DatabaseReference reference;
     FirebaseUser Fuser;
-    String username1="";
+    String cusername="";
 
     StorageReference storageReference;
 
@@ -62,16 +68,32 @@ public class SettingFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.setting_fragment, container, false);
 
+        Fuser = FirebaseAuth.getInstance().getCurrentUser();
+
         profile_image = view.findViewById(R.id.imageView);
         username = view.findViewById(R.id.profile_user);
+        uid = view.findViewById(R.id.uid);
 
         profile_image.setOnClickListener(userPhotoIVClickListener);
         profile_image.setBackground(new ShapeDrawable(new OvalShape()));
+        profile_image.setClipToOutline(true);
 
-        Fuser = FirebaseAuth.getInstance().getCurrentUser();
-        Dreference = FirebaseDatabase.getInstance().getReference("Users").child(Fuser.getUid());
+        uid.setText(Fuser.getUid());
+        uid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        Dreference.addValueEventListener(new ValueEventListener() {
+                ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("uid", Fuser.getUid());
+                clipboardManager.setPrimaryClip(clipData);
+                Toast.makeText(getContext(), "복사완료",Toast.LENGTH_LONG).show();
+
+            }
+        });
+
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(Fuser.getUid());
+
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(final DataSnapshot dataSnapshot) {
                 Users user = dataSnapshot.getValue(Users.class);
@@ -103,10 +125,6 @@ public class SettingFragment extends Fragment {
             }
         });
 
-        if(Build.VERSION.SDK_INT >= 21) {
-            profile_image.setClipToOutline(true);
-        }
-
         Button saveBtn =view.findViewById(R.id.save);
         Button logoutBtn =view.findViewById(R.id.logout);
         saveBtn.setOnClickListener(saveBtnClickListener);
@@ -135,19 +153,16 @@ public class SettingFragment extends Fragment {
     Button.OnClickListener saveBtnClickListener = new View.OnClickListener() {
         public void onClick(final View view) {
 
-            if (!validateForm()) return;
-
             final String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             final FirebaseFirestore db = FirebaseFirestore.getInstance();
-            reference = FirebaseDatabase.getInstance().getReference("Users").child(Fuser.getUid());
 
             HashMap<String, Object> map = new HashMap<>();
 
-            username1 = username.getText().toString();
-            map.put("displayname", username1);
+            cusername = username.getText().toString();
+            map.put("displayname", cusername);
             reference.updateChildren(map);
 
-            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(username1).build();
+            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(cusername).build();
             Fuser.updateProfile(profileUpdates);
 
             if (userPhotoUri!=null) {
@@ -174,6 +189,7 @@ public class SettingFragment extends Fragment {
                             }
                         });
             }
+
         }
     };
     Button.OnClickListener logoutBtnClickListener = new View.OnClickListener() {
@@ -184,12 +200,5 @@ public class SettingFragment extends Fragment {
             getActivity().finish();
         }
     };
-
-            private boolean validateForm () {
-            boolean valid = true;
-
-            return valid;
-        }
-
-        }
+}
 

@@ -1,8 +1,10 @@
 package phm.example.project_Diary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Patterns;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -34,6 +36,7 @@ public class SignupActivity extends AppCompatActivity {
     EditText editTextEmail;
     EditText editTextPassword;
     EditText editTextUser;
+    Button login;
 
     String email = "";
     String password = "";
@@ -50,6 +53,19 @@ public class SignupActivity extends AppCompatActivity {
         editTextEmail = findViewById(R.id.et_email);
         editTextPassword = findViewById(R.id.et_password);
         editTextUser=findViewById(R.id.et_username);
+
+        login=findViewById(R.id.lg);
+
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent;
+
+                intent=new Intent(SignupActivity.this,LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void singUp(View view) {

@@ -5,15 +5,27 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".WriteActivity">
+    tools:context=".WriteActivity"
+    android:background="@color/colorPrimary">
+
+    <Button
+        android:id="@+id/textRemove"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nanumsquare_acl"
+        android:text="DELETE"
+        android:textSize="15dp"
+        android:textColor="#FFFFFF" />
 
     <ImageView
         android:id="@+id/gallery"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_gravity ="center"
-        android:layout_marginTop="60dp"
-        app:srcCompat="@drawable/ic_launcher_foreground"/>
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        app:srcCompat="@drawable/noimg" />
 
     <EditText
         android:id="@+id/title"
@@ -23,45 +35,52 @@
         android:layout_gravity ="center"
         android:layout_marginTop="10dp"
         android:textSize="20dp"
+        android:gravity="center"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
+        android:hint="제목을 입력해주세요"
+        android:textColorHint="#FFFFFF"
         android:fontFamily="@font/nanumsquare_acl"/>
 
     <EditText
         android:id="@+id/mainText"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/maintext"
-        android:lines="10" android:gravity="top|left" android:inputType="textMultiLine|textNoSuggestions"
-        android:scrollHorizontally="false"
-        android:minWidth="10.0dip"
-        android:maxWidth="5.0dip"
-        android:layout_gravity ="center"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_height="350dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:padding="10dp"
         android:layout_marginTop="10dp"
-        android:textSize="20dp"
-        android:fontFamily="@font/nanumsquare_acl"/>
+        android:background="#FFFFFF"
+        android:fontFamily="@font/nanumsquare_acl"
+        android:gravity="top|left"
+        android:inputType="textMultiLine|textNoSuggestions"
+        android:lines="10"
+        android:maxWidth="5.0dip"
+        android:minWidth="10.0dip"
+        android:scrollHorizontally="false"
+        android:hint="내용을 입력해주세요"
+        android:textSize="20dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
         android:id="@+id/time"
+        android:textColor="#FFFFFF"
         android:fontFamily="@font/nanumsquare_acl"/>
 
     <Button
         android:id="@+id/textSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity ="center"
-        android:layout_marginTop="40dp"
-        android:text="save"
-        android:fontFamily="@font/nanumsquare_acl"/>
-    <Button
-        android:id="@+id/textRemove"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity ="center"
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="Remove"
-        android:fontFamily="@font/nanumsquare_acl"/>
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/nanumsquare_acl"
+        android:text="save"
+        android:textSize="15dp"
+        android:textColor="#FFFFFF" />
 
 </LinearLayout>
