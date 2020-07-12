@@ -73,6 +73,7 @@ public class FriendFragment extends Fragment {
                             map2.put("fid", firebaseUser.getUid()); // 친구의 친구목록에 나 추가
                             frf.setValue(map2);
 
+
                             Toast.makeText(getContext(),"친구추가 완료",Toast.LENGTH_LONG).show();
                             search.setText(null);
                         }
