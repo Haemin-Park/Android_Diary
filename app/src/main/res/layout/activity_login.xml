@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="E-mail"
         android:fontFamily="@font/nanumsquare_acl"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="300dp"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp" />
     <EditText

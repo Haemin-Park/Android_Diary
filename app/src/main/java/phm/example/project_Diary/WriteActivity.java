@@ -174,6 +174,7 @@ public class WriteActivity extends AppCompatActivity {
         UserList = intent.getStringExtra("UserList");
 
         diary = (Diary)intent.getSerializableExtra("diary"); // 일기 객체 받아옴
+        removeBtn.setVisibility(View.INVISIBLE);
 
         if(diary != null) {
 
