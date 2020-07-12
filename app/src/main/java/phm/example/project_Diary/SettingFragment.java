@@ -99,7 +99,7 @@ public class SettingFragment extends Fragment {
                 Users user = dataSnapshot.getValue(Users.class);
                 username.setText(user.getDisplayname()); //유저명 바꾸기
                 if(user.getImageURL().equals("default")){
-                    profile_image.setImageResource(R.drawable.ic_launcher_foreground);
+                    profile_image.setImageResource(R.drawable.noimg);
                 }
                 else{
                     FirebaseStorage storage = FirebaseStorage.getInstance();
