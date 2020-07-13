@@ -78,7 +78,7 @@ public class FriendFragment extends Fragment {
                             search.setText(null);
                         }
                         else{
-                            Toast.makeText(getContext(),"존재 하지 않는 UID 입니다.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getContext(),"추가할 수 없는 UID입니다.",Toast.LENGTH_LONG).show();
                             search.setText(null);
                         }
 

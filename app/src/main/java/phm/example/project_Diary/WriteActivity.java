@@ -174,7 +174,7 @@ public class WriteActivity extends AppCompatActivity {
         UserList = intent.getStringExtra("UserList");
 
         diary = (Diary)intent.getSerializableExtra("diary"); // 일기 객체 받아옴
-        removeBtn.setVisibility(View.INVISIBLE);
+        removeBtn.setVisibility(View.INVISIBLE); // 글을 작성하는 상태 또는 친구 일기라면 삭제 버튼 보이지 않음
 
         if(diary != null) {
 
@@ -192,9 +192,12 @@ public class WriteActivity extends AppCompatActivity {
                 saveBtn.setVisibility(View.VISIBLE);
                 removeBtn.setVisibility(View.VISIBLE);
             }
-            else { // 친구의 글이라면 버튼 보이지 않음
+            else { // 친구의 일기라면 버튼 보이지 않음(즉 ReadOnly)
                 saveBtn.setVisibility(View.INVISIBLE);
-                removeBtn.setVisibility(View.INVISIBLE);
+                title.setFocusable(false);
+                title.setClickable(false);
+                mainText.setFocusable(false);
+                mainText.setClickable(false);
             }
 
             title.setText(StrTitle);

@@ -64,7 +64,7 @@ public class DiarysStart extends Activity {
                 finish();
 
             }
-        }); //ok버튼을 누르면 데이터베이스에 채팅방 생성
+        }); // ok버튼을 누르면 데이터베이스에 채팅방 생성
     }
 
     public void createDiarys(String id){
